@@ -11,37 +11,38 @@
       --accent: #ff6b35; --accent2: #ff9f1c; --text: #f0f0f0; --muted: #8e8e93;
       --green: #30d158; --red: #ff453a; --radius: 14px; --nav-h: 62px;
     }
-    html, body { height: 100%; }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    html, body { height: 100%; overflow-x: hidden; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; }
+
     #app { max-width: 480px; margin: 0 auto; min-height: 100dvh; }
-    .view { display: none; padding: 16px 16px calc(var(--nav-h) + 20px); min-height: 100dvh; }
+
+    .view { display: none; padding: 0 14px calc(var(--nav-h) + 16px); min-height: 100dvh; }
     .view.active { display: block; }
-    .flex-1 { flex: 1; }
 
     /* nav */
     nav {
       position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
       width: 100%; max-width: 480px; height: var(--nav-h);
       background: var(--card); border-top: 1px solid var(--border);
-      display: flex; z-index: 100;
+      display: flex; z-index: 100; padding-bottom: env(safe-area-inset-bottom, 0);
     }
     .nav-tab {
       flex: 1; display: flex; flex-direction: column; align-items: center;
       justify-content: center; gap: 3px; cursor: pointer; color: var(--muted);
-      font-size: 0.62rem; border: none; background: none;
-      touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+      font-size: 0.6rem; border: none; background: none;
+      touch-action: manipulation; -webkit-tap-highlight-color: transparent; padding: 6px 0;
     }
     .nav-tab.active { color: var(--accent); }
-    .nav-tab svg { width: 22px; height: 22px; }
+    .nav-tab svg { width: 20px; height: 20px; flex-shrink: 0; }
 
     /* page header */
-    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding-top: 10px; }
-    .page-title { font-size: 1.55rem; font-weight: 700; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 16px; }
+    .page-title { font-size: 1.5rem; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .page-title.grad { background: linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
     /* buttons */
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; padding: 10px 16px; cursor: pointer; touch-action: manipulation; transition: opacity .15s; -webkit-tap-highlight-color: transparent; }
-    .btn:active { opacity: .7; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; border: none; border-radius: 10px; font-weight: 600; padding: 11px 16px; cursor: pointer; touch-action: manipulation; transition: opacity .15s; -webkit-tap-highlight-color: transparent; white-space: nowrap; font-size: 0.875rem; }
+    .btn:active { opacity: .65; }
     .btn-primary { background: var(--accent); color: #fff; }
     .btn-secondary { background: var(--card2); color: var(--text); }
     .btn-ghost { background: none; border: 1px solid var(--border); color: var(--muted); }
@@ -51,101 +52,121 @@
     .btn-sm { padding: 7px 12px; font-size: 0.8rem; }
 
     /* card */
-    .card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 14px; }
+    .card { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
 
     /* timer */
-    .timer-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); text-align: center; }
-    .timer-display { font-size: 3.5rem; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -2px; color: var(--accent); text-align: center; line-height: 1; margin: 8px 0 16px; }
+    .timer-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); text-align: center; }
+    .timer-display { font-size: clamp(2.8rem, 10vw, 3.5rem); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -2px; color: var(--accent); text-align: center; line-height: 1; margin: 6px 0 14px; }
     .timer-display.running { color: var(--green); }
     .timer-display.warning { color: var(--red); }
-    .timer-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 12px; }
+    .timer-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
     .timer-row .btn { flex: 1; max-width: 130px; }
-    .presets { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
-    .preset { background: var(--card2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 5px 12px; font-size: .8rem; cursor: pointer; touch-action: manipulation; }
+    .presets { display: flex; gap: 6px; justify-content: center; }
+    .preset { background: var(--card2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 5px 11px; font-size: .78rem; cursor: pointer; touch-action: manipulation; }
     .preset.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
     /* exercise cards */
-    .ex-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; border-left: 4px solid transparent; transition: border-color .2s; }
+    .ex-card { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; border-left: 4px solid transparent; }
     .ex-card.has-sets { border-left-color: var(--accent); }
-    .ex-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .ex-name { font-size: 1.05rem; font-weight: 700; }
-    .ex-cat { font-size: .7rem; color: var(--muted); margin-top: 2px; }
-    .set-count { font-size: .75rem; color: var(--muted); background: var(--card2); border-radius: 8px; padding: 3px 9px; }
-    .set-count span { color: var(--accent); font-weight: 700; }
-    .prev-best { font-size: .72rem; color: var(--muted); background: var(--card2); border-radius: 8px; padding: 6px 10px; margin-bottom: 10px; }
+    .ex-card-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; min-width: 0; }
+    .ex-card-info { flex: 1; min-width: 0; }
+    .ex-name { font-size: 1rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ex-cat { font-size: .68rem; color: var(--muted); margin-top: 1px; }
+    .ex-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+    .set-progress { font-size: .72rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+    .set-progress.on-target { color: var(--green); }
+
+    .target-badge { display: inline-block; font-size: .68rem; color: var(--accent2); background: rgba(255,159,28,.1); border-radius: 6px; padding: 2px 7px; margin-bottom: 8px; }
+
+    .prev-best { font-size: .7rem; color: var(--muted); background: var(--card2); border-radius: 8px; padding: 6px 10px; margin-bottom: 8px; line-height: 1.4; }
     .prev-best strong { color: var(--text); }
-    .sets-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; min-height: 30px; }
-    .set-tag { background: var(--card2); border-radius: 8px; padding: 5px 9px; font-size: .8rem; display: flex; align-items: center; gap: 5px; }
-    .set-del { color: var(--muted); cursor: pointer; padding: 0 2px; touch-action: manipulation; }
+
+    .sets-list { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; min-height: 28px; }
+    .set-tag { background: var(--card2); border-radius: 7px; padding: 4px 8px; font-size: .78rem; display: flex; align-items: center; gap: 4px; }
+    .set-del { color: var(--muted); cursor: pointer; padding: 0 2px; touch-action: manipulation; font-size: .95rem; line-height: 1; }
     .set-del:active { color: var(--red); }
-    .log-row { display: flex; gap: 6px; align-items: center; }
-    .log-row input { flex: 1; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 1rem; padding: 9px 10px; text-align: center; outline: none; -moz-appearance: textfield; }
+
+    .log-row { display: flex; gap: 5px; align-items: stretch; }
+    .log-row input { flex: 1; min-width: 0; background: var(--card2); border: 1px solid var(--border); border-radius: 9px; color: var(--text); font-size: .95rem; padding: 9px 6px; text-align: center; outline: none; -moz-appearance: textfield; width: 100%; }
     .log-row input::-webkit-inner-spin-button, .log-row input::-webkit-outer-spin-button { -webkit-appearance: none; }
     .log-row input:focus { border-color: var(--accent); }
-    .log-sep { color: var(--muted); font-size: .85rem; }
-    .rest-btn { width: 100%; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; color: var(--accent); font-size: .82rem; font-weight: 600; padding: 8px; margin-top: 10px; cursor: pointer; touch-action: manipulation; }
-    .rest-btn:active { opacity: .7; }
+    .log-sep { color: var(--muted); font-size: .8rem; display: flex; align-items: center; flex-shrink: 0; }
+    .log-row .btn-sm { flex-shrink: 0; padding: 9px 14px; }
+
+    .rest-btn { width: 100%; background: none; border: 1px solid var(--border); border-radius: 9px; color: var(--muted); font-size: .78rem; font-weight: 600; padding: 7px; margin-top: 8px; cursor: pointer; touch-action: manipulation; }
+    .rest-btn:active { background: var(--card2); }
 
     /* finish bar */
-    .finish-bar { background: rgba(48,209,88,.15); border: 1px solid var(--green); border-radius: var(--radius); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .finish-bar span { color: var(--green); font-weight: 600; font-size: .9rem; }
+    .finish-bar { background: rgba(48,209,88,.12); border: 1px solid rgba(48,209,88,.3); border-radius: var(--radius); padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
+    .finish-bar span { color: var(--green); font-weight: 600; font-size: .88rem; }
 
     /* empty state */
-    .empty-state { text-align: center; padding: 48px 20px; }
+    .empty-state { text-align: center; padding: 56px 20px; }
     .empty-state h2 { font-size: 1.15rem; margin-bottom: 8px; }
-    .empty-state p { color: var(--muted); font-size: .9rem; margin-bottom: 20px; }
+    .empty-state p { color: var(--muted); font-size: .88rem; margin-bottom: 22px; line-height: 1.5; }
 
-    /* week view */
-    .day-row { background: var(--card); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; border: 1px solid transparent; }
+    /* week */
+    .day-row { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; border: 1px solid transparent; }
     .day-row.today { border-color: var(--accent); }
-    .day-name { font-weight: 700; min-width: 44px; }
-    .day-workout { flex: 1; padding: 0 10px; font-size: .9rem; }
+    .day-name-wrap { display: flex; align-items: center; gap: 7px; min-width: 44px; flex-shrink: 0; }
+    .day-name { font-weight: 700; font-size: .95rem; }
+    .today-badge { font-size: .6rem; background: rgba(255,107,53,.18); color: var(--accent); border-radius: 5px; padding: 2px 6px; font-weight: 700; flex-shrink: 0; }
+    .day-workout { flex: 1; min-width: 0; font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .day-workout.rest { color: var(--muted); font-style: italic; }
-    .day-chevron { color: var(--muted); }
-    .today-badge { font-size: .65rem; background: rgba(255,107,53,.2); color: var(--accent); border-radius: 5px; padding: 2px 6px; margin-left: 6px; font-weight: 700; }
+    .day-chevron { color: var(--border); font-size: 1.2rem; flex-shrink: 0; }
 
     /* history */
-    .session-card { background: var(--card); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-    .session-header { display: flex; justify-content: space-between; align-items: flex-start; }
-    .session-date { font-weight: 700; font-size: .95rem; }
-    .session-group { font-size: .78rem; color: var(--accent); margin-top: 3px; }
-    .session-stats { font-size: .78rem; color: var(--muted); text-align: right; line-height: 1.5; }
+    .session-card { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .session-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    .session-info { min-width: 0; flex: 1; }
+    .session-date { font-weight: 700; font-size: .92rem; }
+    .session-group { font-size: .75rem; color: var(--accent); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .session-meta { font-size: .75rem; color: var(--muted); text-align: right; line-height: 1.6; flex-shrink: 0; }
     .session-body { margin-top: 12px; display: none; border-top: 1px solid var(--border); padding-top: 10px; }
     .session-body.open { display: block; }
-    .session-ex { padding: 5px 0; border-bottom: 1px solid var(--border); font-size: .82rem; }
+    .session-ex { padding: 5px 0; border-bottom: 1px solid var(--border); font-size: .8rem; }
     .session-ex:last-child { border-bottom: none; }
     .session-ex-name { font-weight: 600; margin-bottom: 2px; }
-    .session-sets { color: var(--muted); }
+    .session-sets { color: var(--muted); word-break: break-word; }
 
     /* library */
-    .section-title { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 16px 0 8px; }
+    .section-title { font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 18px 0 8px; }
     .list-item { background: var(--card); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-    .list-item-name { font-size: .95rem; font-weight: 600; }
-    .list-item-sub { font-size: .75rem; color: var(--muted); margin-top: 2px; }
-    .list-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
-    .icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: 5px 7px; font-size: 1rem; touch-action: manipulation; border-radius: 6px; }
+    .list-item-text { flex: 1; min-width: 0; }
+    .list-item-name { font-size: .92rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .list-item-sub { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+    .list-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: 6px 8px; font-size: .95rem; touch-action: manipulation; border-radius: 7px; }
     .icon-btn:active { background: var(--card2); color: var(--red); }
-    .cat-group-label { font-size: .75rem; color: var(--muted); font-weight: 600; margin: 10px 0 5px; }
+    .cat-group-label { font-size: .72rem; color: var(--muted); font-weight: 600; margin: 10px 0 5px; }
 
     /* modals */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 200; align-items: flex-end; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.78); z-index: 200; align-items: flex-end; -webkit-tap-highlight-color: transparent; }
     .modal-overlay.open { display: flex; }
-    .modal { background: #1c1c1e; border-radius: 20px 20px 0 0; padding: 16px 20px 28px; width: 100%; max-width: 480px; margin: 0 auto; max-height: 82dvh; overflow-y: auto; }
+    .modal { background: #1c1c1e; border-radius: 20px 20px 0 0; padding: 12px 16px calc(20px + env(safe-area-inset-bottom,0)); width: 100%; max-width: 480px; margin: 0 auto; max-height: 88dvh; overflow-y: auto; overscroll-behavior: contain; }
     .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
     .modal-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 14px; }
-    .modal-option { padding: 13px 14px; border-radius: 10px; cursor: pointer; font-size: .92rem; display: flex; align-items: center; justify-content: space-between; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-    .modal-option:active, .modal-option.selected { background: var(--card2); }
-    .modal-option.selected { color: var(--accent); }
-    .modal-input { width: 100%; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 1rem; padding: 11px 14px; outline: none; margin-bottom: 12px; }
+    .modal-option { padding: 13px 10px; border-radius: 10px; cursor: pointer; font-size: .9rem; display: flex; align-items: center; justify-content: space-between; gap: 8px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    .modal-option:active { background: var(--card2); }
+    .modal-option.selected { background: var(--card2); color: var(--accent); }
+    .modal-option-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .modal-input { width: 100%; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: .95rem; padding: 11px 13px; outline: none; margin-bottom: 12px; }
     .modal-input:focus { border-color: var(--accent); }
 
-    /* group editor */
-    .group-ex-item { display: flex; align-items: center; gap: 7px; padding: 9px 12px; background: var(--card2); border-radius: 10px; margin-bottom: 6px; }
-    .group-ex-name { flex: 1; font-size: .88rem; }
-    .group-ex-cat { font-size: .68rem; color: var(--muted); }
-    .order-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .85rem; touch-action: manipulation; flex-shrink: 0; }
-    .order-btn:active { background: var(--card); }
-    .order-btn:disabled { opacity: .3; }
+    /* group editor exercise row */
+    .group-ex-item { background: var(--card2); border-radius: 10px; padding: 10px 12px; margin-bottom: 6px; }
+    .group-ex-top { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .group-ex-name { flex: 1; min-width: 0; font-size: .88rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .group-ex-cat { font-size: .65rem; color: var(--muted); flex-shrink: 0; }
+    .group-ex-targets { display: flex; gap: 6px; align-items: center; }
+    .group-ex-targets input { flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: .82rem; padding: 6px 4px; text-align: center; outline: none; -moz-appearance: textfield; }
+    .group-ex-targets input::-webkit-inner-spin-button, .group-ex-targets input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .group-ex-targets input:focus { border-color: var(--accent); }
+    .group-ex-targets label { font-size: .65rem; color: var(--muted); text-align: center; white-space: nowrap; }
+    .group-ex-targets-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: 1; }
+    .order-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .8rem; touch-action: manipulation; flex-shrink: 0; padding: 0; }
+    .order-btn:active { background: var(--bg); }
+    .order-btn:disabled { opacity: .25; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -208,7 +229,7 @@
     </button>
   </nav>
 
-  <!-- GROUP PICKER MODAL -->
+  <!-- GROUP PICKER -->
   <div class="modal-overlay" id="groupPickerOverlay" onclick="overlayClose(event,'groupPickerOverlay')">
     <div class="modal">
       <div class="modal-handle"></div>
@@ -218,7 +239,7 @@
     </div>
   </div>
 
-  <!-- GROUP EDITOR MODAL -->
+  <!-- GROUP EDITOR -->
   <div class="modal-overlay" id="groupEditorOverlay" onclick="overlayClose(event,'groupEditorOverlay')">
     <div class="modal">
       <div class="modal-handle"></div>
@@ -231,18 +252,18 @@
     </div>
   </div>
 
-  <!-- EX PICKER MODAL -->
+  <!-- EX PICKER -->
   <div class="modal-overlay" id="exPickerOverlay" onclick="overlayClose(event,'exPickerOverlay')">
     <div class="modal">
       <div class="modal-handle"></div>
       <div class="modal-title">Add Exercise</div>
-      <input class="modal-input" id="exSearch" placeholder="Search exercises..." oninput="renderExPicker()" />
+      <input class="modal-input" id="exSearch" placeholder="Search..." oninput="renderExPicker()" />
       <div id="exPickerList"></div>
       <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="closeModal('exPickerOverlay')">Back</button>
     </div>
   </div>
 
-  <!-- NEW EXERCISE MODAL -->
+  <!-- NEW EXERCISE -->
   <div class="modal-overlay" id="newExOverlay" onclick="overlayClose(event,'newExOverlay')">
     <div class="modal">
       <div class="modal-handle"></div>
@@ -291,138 +312,168 @@ const DEFAULT_EXERCISES = [
   {id:'e29',name:'Pad Work',cat:'Bag'},
 ];
 
+// Groups: exercises = [{exId, targetSets, targetReps, targetWeight}]
+// Research-backed pairings per core lift:
+// Bench Day   — horizontal push + counterbalance horizontal pull + tricep/chest isolation
+// Back Squat  — quad/posterior chain volume + hamstring isolation
+// Chin Up Day — vertical pull + horizontal pull + bicep + rear delt
+// Deadlift    — posterior chain + upper back + press for balance
+// Front Squat — quad dominant / Olympic accessory + unilateral leg work
+// TKD Day     — bag work (reps = rounds)
 const DEFAULT_GROUPS = [
-  {id:'g1',name:'Core Exercises',exerciseIds:['e1','e2','e4','e24','e3','e27']}
+  {
+    id:'g-bench', name:'Bench Day',
+    exercises:[
+      {exId:'e4',  targetSets:5, targetReps:5,  targetWeight:70},  // Bench Press — primary 5×5 strength
+      {exId:'e10', targetSets:3, targetReps:10, targetWeight:22},  // Dumbbell Row — counterbalance horizontal pull
+      {exId:'e15', targetSets:3, targetReps:12, targetWeight:12},  // Dumbbell Fly — chest isolation
+      {exId:'e22', targetSets:3, targetReps:12, targetWeight:20},  // Cable Tricep Pushdown — tricep assistance
+      {exId:'e11', targetSets:3, targetReps:12, targetWeight:12},  // Dumbbell Curl — elbow flexion balance
+      {exId:'e9',  targetSets:3, targetReps:10, targetWeight:20},  // Dumbbell Press — secondary push / incline variation
+    ]
+  },
+  {
+    id:'g-squat', name:'Back Squat Day',
+    exercises:[
+      {exId:'e1',  targetSets:5, targetReps:5,  targetWeight:60},  // Back Squat — primary 5×5
+      {exId:'e7',  targetSets:3, targetReps:8,  targetWeight:50},  // Romanian Deadlift — posterior chain / hamstrings
+      {exId:'e16', targetSets:3, targetReps:10, targetWeight:80},  // Leg Press — quad volume
+      {exId:'e20', targetSets:3, targetReps:12, targetWeight:30},  // Leg Curl — hamstring isolation
+      {exId:'e13', targetSets:3, targetReps:12, targetWeight:20},  // Goblet Squat — mobility & form reinforcement
+    ]
+  },
+  {
+    id:'g-chinup', name:'Chin Up Day',
+    exercises:[
+      {exId:'e24', targetSets:4, targetReps:8,  targetWeight:null},// Chin Ups — primary vertical pull (bodyweight)
+      {exId:'e17', targetSets:3, targetReps:10, targetWeight:40},  // Lat Pulldown — lat volume assistance
+      {exId:'e6',  targetSets:3, targetReps:8,  targetWeight:50},  // Barbell Row — overall back thickness
+      {exId:'e18', targetSets:3, targetReps:12, targetWeight:40},  // Cable Row — mid-back / rhomboids
+      {exId:'e11', targetSets:3, targetReps:12, targetWeight:12},  // Dumbbell Curl — bicep isolation
+      {exId:'e12', targetSets:3, targetReps:12, targetWeight:8},   // Lateral Raise — rear/side delt balance
+    ]
+  },
+  {
+    id:'g-deadlift', name:'Deadlift Day',
+    exercises:[
+      {exId:'e3',  targetSets:3, targetReps:5,  targetWeight:80},  // Deadlift — primary 3×5 strength
+      {exId:'e7',  targetSets:3, targetReps:8,  targetWeight:50},  // Romanian Deadlift — hamstring accessory
+      {exId:'e6',  targetSets:3, targetReps:8,  targetWeight:50},  // Barbell Row — upper back carries over to pull
+      {exId:'e18', targetSets:3, targetReps:12, targetWeight:40},  // Cable Row — mid-back endurance
+      {exId:'e5',  targetSets:3, targetReps:8,  targetWeight:40},  // Overhead Press — shoulder / pressing balance
+    ]
+  },
+  {
+    id:'g-frontsquat', name:'Front Squat Day',
+    exercises:[
+      {exId:'e2',  targetSets:4, targetReps:4,  targetWeight:50},  // Front Squat — primary 4×4 technical work
+      {exId:'e21', targetSets:3, targetReps:12, targetWeight:30},  // Leg Extension — quad isolation
+      {exId:'e16', targetSets:3, targetReps:10, targetWeight:80},  // Leg Press — quad volume
+      {exId:'e14', targetSets:3, targetReps:10, targetWeight:16},  // Dumbbell Lunge — unilateral leg strength
+      {exId:'e26', targetSets:3, targetReps:10, targetWeight:null},// Dips — tricep / pressing assistance
+    ]
+  },
+  {
+    id:'g-tkd', name:'Taekwondo Day',
+    exercises:[
+      {exId:'e27', targetSets:5, targetReps:3, targetWeight:null}, // TKD Kick Session — 5 sets × 3 min rounds
+      {exId:'e28', targetSets:3, targetReps:3, targetWeight:null}, // Heavy Bag Rounds — 3 × 3 min
+      {exId:'e29', targetSets:3, targetReps:3, targetWeight:null}, // Pad Work — 3 × 3 min
+    ]
+  },
 ];
+
+const DEFAULT_SCHEDULE = {0:null,1:'g-bench',2:'g-squat',3:null,4:'g-deadlift',5:'g-tkd',6:null};
 
 // ── DB ─────────────────────────────────────────────────────────────────────
 let db;
-
 function loadDB() {
-  try {
-    const s = localStorage.getItem('wapp_v2');
-    db = s ? JSON.parse(s) : null;
-  } catch(e) { db = null; }
+  try { db = JSON.parse(localStorage.getItem('wapp_v3') || 'null'); } catch(e) { db = null; }
   if (!db) {
-    db = {
-      exercises: JSON.parse(JSON.stringify(DEFAULT_EXERCISES)),
-      groups: JSON.parse(JSON.stringify(DEFAULT_GROUPS)),
-      schedule: {0:null,1:'g1',2:null,3:'g1',4:null,5:null,6:null},
-      sessions: []
-    };
-    saveDB();
+    db = { exercises: clone(DEFAULT_EXERCISES), groups: clone(DEFAULT_GROUPS), schedule: {...DEFAULT_SCHEDULE}, sessions: [] };
+    saveDB(); return;
   }
+  // Migrate old exerciseIds format to exercises array
+  db.groups = (db.groups||[]).map(g => {
+    if (g.exerciseIds && !g.exercises) {
+      return {...g, exercises: g.exerciseIds.map(exId => ({exId, targetSets:3, targetReps:10, targetWeight:null})), exerciseIds:undefined};
+    }
+    return g;
+  });
+  if (!db.schedule) db.schedule = {...DEFAULT_SCHEDULE};
+  saveDB();
 }
-
-function saveDB() { localStorage.setItem('wapp_v2', JSON.stringify(db)); }
+function saveDB() { localStorage.setItem('wapp_v3', JSON.stringify(db)); }
+function clone(x) { return JSON.parse(JSON.stringify(x)); }
 function uid() { return '_' + Math.random().toString(36).slice(2,9); }
 function todayStr() { return new Date().toISOString().slice(0,10); }
 function todayDow() { return new Date().getDay(); }
 function getEx(id) { return db.exercises.find(e => e.id === id); }
 function getGroup(id) { return db.groups.find(g => g.id === id); }
-
-function fmtDate(s) {
-  return new Date(s + 'T12:00:00').toLocaleDateString('en-AU', {weekday:'short',day:'numeric',month:'short'});
-}
+function fmtDate(s) { return new Date(s+'T12:00:00').toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'}); }
 
 // ── Sessions ───────────────────────────────────────────────────────────────
-function getActiveSession() {
-  return db.sessions.find(s => s.date === todayStr() && !s.finished);
-}
+function getActiveSession() { return db.sessions.find(s => s.date===todayStr() && !s.finished); }
 
 function startSession(groupId) {
-  const s = { id: uid(), date: todayStr(), groupId, sets: {}, finished: false };
-  db.sessions.push(s);
-  saveDB();
-  return s;
+  const s = {id:uid(), date:todayStr(), groupId, sets:{}, finished:false};
+  db.sessions.push(s); saveDB(); return s;
 }
-
 function finishSession() {
-  const s = getActiveSession();
-  if (s) { s.finished = true; saveDB(); renderToday(); }
+  const s = getActiveSession(); if (!s) return;
+  s.finished = true; saveDB(); renderToday();
 }
-
-function logSetToSession(exId, weight, reps) {
-  const s = getActiveSession();
-  if (!s) return;
+function logSetToSession(exId, w, r) {
+  const s = getActiveSession(); if (!s) return;
   if (!s.sets[exId]) s.sets[exId] = [];
-  s.sets[exId].push({w: weight, r: reps});
-  saveDB();
+  s.sets[exId].push({w,r}); saveDB();
 }
-
-function deleteSetFromSession(exId, idx) {
-  const s = getActiveSession();
-  if (!s) return;
-  s.sets[exId].splice(idx, 1);
-  saveDB();
-  renderToday();
+function delSetFromSession(exId, idx) {
+  const s = getActiveSession(); if (!s) return;
+  s.sets[exId].splice(idx,1); saveDB(); renderToday();
 }
-
 function getPrevBest(exId) {
   const today = todayStr();
-  return [...db.sessions].reverse().find(s =>
-    s.finished && s.date !== today && s.sets[exId] && s.sets[exId].length > 0
-  ) || null;
+  return [...db.sessions].reverse().find(s => s.finished && s.date!==today && s.sets[exId]?.length>0) || null;
 }
 
 // ── Timer ──────────────────────────────────────────────────────────────────
-let timerDuration = 90, timerRemaining = 90, timerInterval = null, timerRunning = false;
-
-function fmtTime(s) { return `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`; }
-
+let timerDur=90, timerRem=90, timerIv=null, timerOn=false;
+function fmtT(s) { return `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`; }
 function updateTimerUI() {
-  const d = document.getElementById('timerDisplay');
-  const b = document.getElementById('startStopBtn');
+  const d=document.getElementById('timerDisplay'), b=document.getElementById('startStopBtn');
   if (!d) return;
-  d.textContent = fmtTime(timerRemaining);
-  d.className = 'timer-display' + (timerRunning && timerRemaining > 10 ? ' running' : timerRunning ? ' warning' : '');
-  if (b) { b.textContent = timerRunning ? 'Stop' : 'Start'; b.className = timerRunning ? 'btn btn-red' : 'btn btn-green'; }
+  d.textContent = fmtT(timerRem);
+  d.className = 'timer-display'+(timerOn&&timerRem>10?' running':timerOn?' warning':'');
+  if (b) { b.textContent=timerOn?'Stop':'Start'; b.className=timerOn?'btn btn-red':'btn btn-green'; }
 }
-
 function toggleTimer() {
-  if (timerRunning) {
-    clearInterval(timerInterval); timerRunning = false;
-  } else {
-    if (timerRemaining === 0) timerRemaining = timerDuration;
-    timerRunning = true;
-    timerInterval = setInterval(() => {
-      timerRemaining--;
-      updateTimerUI();
-      if (timerRemaining <= 0) {
-        clearInterval(timerInterval); timerRunning = false; timerRemaining = 0;
-        if ('vibrate' in navigator) navigator.vibrate([200,100,200]);
-        updateTimerUI();
-      }
-    }, 1000);
+  if (timerOn) { clearInterval(timerIv); timerOn=false; }
+  else {
+    if (timerRem===0) timerRem=timerDur;
+    timerOn=true;
+    timerIv=setInterval(()=>{ timerRem--; updateTimerUI(); if(timerRem<=0){clearInterval(timerIv);timerOn=false;timerRem=0;if('vibrate'in navigator)navigator.vibrate([200,100,200]);updateTimerUI();} },1000);
   }
   updateTimerUI();
 }
-
-function resetTimer() {
-  clearInterval(timerInterval); timerRunning = false; timerRemaining = timerDuration; updateTimerUI();
-}
-
+function resetTimer() { clearInterval(timerIv); timerOn=false; timerRem=timerDur; updateTimerUI(); }
 function setPreset(s) {
-  resetTimer(); timerDuration = s; timerRemaining = s;
-  document.querySelectorAll('.preset').forEach(b => {
-    b.classList.toggle('active', +b.getAttribute('onclick').match(/\d+/)[0] === s);
-  });
+  resetTimer(); timerDur=s; timerRem=s;
+  document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active',+b.getAttribute('onclick').match(/\d+/)[0]===s));
   updateTimerUI();
 }
-
 function startRest() {
-  clearInterval(timerInterval); timerRunning = false; timerRemaining = timerDuration; updateTimerUI();
-  toggleTimer();
+  clearInterval(timerIv); timerOn=false; timerRem=timerDur; updateTimerUI(); toggleTimer();
   document.getElementById('timerSection')?.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 // ── Navigation ─────────────────────────────────────────────────────────────
 function showView(name) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('view-' + name).classList.add('active');
-  document.getElementById('tab-' + name).classList.add('active');
-  ({today: renderToday, week: renderWeek, history: renderHistory, library: renderLibrary})[name]?.();
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  ({today:renderToday,week:renderWeek,history:renderHistory,library:renderLibrary})[name]?.();
 }
 
 // ── TODAY ──────────────────────────────────────────────────────────────────
@@ -430,86 +481,112 @@ function renderToday() {
   const dow = todayDow();
   const scheduledId = db.schedule[dow];
   const session = getActiveSession();
-  const content = document.getElementById('todayContent');
+  const el = document.getElementById('todayContent');
   const titleEl = document.getElementById('todayTitle');
 
   let group = session ? getGroup(session.groupId) : (scheduledId ? getGroup(scheduledId) : null);
   titleEl.textContent = group ? group.name : DAYS[dow];
 
   if (!session && !group) {
-    content.innerHTML = `<div class="empty-state"><h2>No workout today</h2><p>Pick a workout group to start</p><button class="btn btn-primary" onclick="openGroupPicker('start')">Start Workout</button></div>`;
+    el.innerHTML=`<div class="empty-state"><h2>No workout today</h2><p>Assign a workout to this day in the Week tab, or pick one now.</p><button class="btn btn-primary" onclick="openGroupPicker('start')">Pick Workout</button></div>`;
     return;
   }
-
   if (!session) {
-    content.innerHTML = `<div class="empty-state"><h2>${group.name}</h2><p>${group.exerciseIds.length} exercises scheduled</p><button class="btn btn-primary" onclick="beginSession('${group.id}')">Start Session</button></div>`;
+    const exs = group.exercises||[];
+    el.innerHTML=`<div class="empty-state"><h2>${group.name}</h2><p>${exs.length} exercises planned</p><button class="btn btn-primary" onclick="beginSession('${group.id}')">Start Session</button></div>`;
     return;
   }
 
   group = getGroup(session.groupId);
-  const exIds = group ? group.exerciseIds : Object.keys(session.sets);
+  const exConfigs = group ? group.exercises : Object.keys(session.sets).map(exId=>({exId,targetSets:null,targetReps:null,targetWeight:null}));
+
   let html = `<div class="finish-bar"><span>Session active</span><button class="btn btn-sm btn-green" onclick="finishSession()">Finish ✓</button></div>`;
 
-  exIds.forEach(exId => {
-    const ex = getEx(exId); if (!ex) return;
-    const sets = session.sets[exId] || [];
-    const prev = getPrevBest(exId);
-    const prevHtml = prev
-      ? `<div class="prev-best">Last (${fmtDate(prev.date)}): <strong>${prev.sets[exId].map(s=>(s.w?s.w+'kg×':'')+s.r+'r').join(' · ')}</strong></div>`
-      : '';
-    const setsHtml = sets.map((s,i) => `<div class="set-tag">${s.w?s.w+'kg × ':''}${s.r}r<span class="set-del" onclick="delSet('${exId}',${i})">×</span></div>`).join('');
+  exConfigs.forEach(cfg => {
+    const ex = getEx(cfg.exId); if (!ex) return;
+    const sets = session.sets[cfg.exId] || [];
+    const tgt = cfg.targetSets;
+    const done = sets.length;
+    const onTarget = tgt && done >= tgt;
 
-    html += `<div class="ex-card${sets.length?' has-sets':''}" id="exc-${exId}">
+    // Target badge
+    let tgtStr = '';
+    if (cfg.targetSets) {
+      tgtStr = `${cfg.targetSets} × ${cfg.targetReps}`;
+      if (cfg.targetWeight) tgtStr += ` @ ${cfg.targetWeight}kg`;
+    }
+
+    // Previous best
+    const prev = getPrevBest(cfg.exId);
+    let prevHtml = '';
+    if (prev) {
+      const prevSets = prev.sets[cfg.exId]||[];
+      prevHtml = `<div class="prev-best">Last (${fmtDate(prev.date)}): <strong>${prevSets.map(s=>(s.w?s.w+'kg×':'')+s.r+'r').join(' · ')}</strong></div>`;
+    }
+
+    const setsHtml = sets.map((s,i)=>`<div class="set-tag">${s.w?s.w+'kg × ':''}${s.r}r<span class="set-del" onclick="delSet('${cfg.exId}',${i})">×</span></div>`).join('');
+
+    html += `<div class="ex-card${done?' has-sets':''}" id="exc-${cfg.exId}">
       <div class="ex-card-header">
-        <div><div class="ex-name">${ex.name}</div><div class="ex-cat">${ex.cat}</div></div>
-        <div class="set-count"><span>${sets.length}</span> set${sets.length!==1?'s':''}</div>
+        <div class="ex-card-info">
+          <div class="ex-name">${ex.name}</div>
+          <div class="ex-cat">${ex.cat}</div>
+        </div>
+        <div class="ex-card-right">
+          <div class="set-progress${onTarget?' on-target':''}">${tgt ? done+'/'+tgt+' sets' : done+' sets'}</div>
+        </div>
       </div>
+      ${tgtStr?`<div class="target-badge">Target: ${tgtStr}</div>`:''}
       ${prevHtml}
-      <div class="sets-list" id="sets-${exId}">${setsHtml}</div>
+      <div class="sets-list" id="sets-${cfg.exId}">${setsHtml}</div>
       <div class="log-row">
-        <input type="number" id="w-${exId}" placeholder="kg" min="0" step="2.5"/>
+        <input type="number" id="w-${cfg.exId}" placeholder="${cfg.targetWeight||'kg'}" min="0" step="2.5" value="${cfg.targetWeight||''}"/>
         <span class="log-sep">×</span>
-        <input type="number" id="r-${exId}" placeholder="reps" min="1" step="1"/>
-        <button class="btn btn-primary btn-sm" onclick="logSet('${exId}')">+Set</button>
+        <input type="number" id="r-${cfg.exId}" placeholder="${cfg.targetReps||'reps'}" min="1" step="1" value="${cfg.targetReps||''}"/>
+        <button class="btn btn-primary btn-sm" onclick="logSet('${cfg.exId}')">+Set</button>
       </div>
-      <button class="rest-btn" onclick="startRest()">⏱ Start Rest</button>
+      <button class="rest-btn" onclick="startRest()">⏱ Rest</button>
     </div>`;
   });
 
-  content.innerHTML = html;
+  el.innerHTML = html;
   updateTimerUI();
 }
 
-function beginSession(groupId) {
-  startSession(groupId);
-  renderToday();
-}
+function beginSession(groupId) { startSession(groupId); renderToday(); }
 
 function logSet(exId) {
-  const rEl = document.getElementById('r-' + exId);
-  const wEl = document.getElementById('w-' + exId);
-  const r = parseInt(rEl.value); if (!r || r < 1) { rEl.focus(); return; }
-  const w = parseFloat(wEl.value) || null;
-  logSetToSession(exId, w, r);
-  const s = getActiveSession().sets[exId];
-  document.getElementById('exc-' + exId)?.classList.toggle('has-sets', s.length > 0);
-  const sc = document.querySelector(`#exc-${exId} .set-count`);
-  if (sc) sc.innerHTML = `<span>${s.length}</span> set${s.length!==1?'s':''}`;
-  const sl = document.getElementById('sets-' + exId);
-  if (sl) sl.innerHTML = s.map((st,i) => `<div class="set-tag">${st.w?st.w+'kg × ':''}${st.r}r<span class="set-del" onclick="delSet('${exId}',${i})">×</span></div>`).join('');
-  rEl.value = ''; rEl.focus();
+  const rEl=document.getElementById('r-'+exId), wEl=document.getElementById('w-'+exId);
+  const r=parseInt(rEl.value); if(!r||r<1){rEl.focus();return;}
+  const w=parseFloat(wEl.value)||null;
+  logSetToSession(exId,w,r);
+  const s=getActiveSession().sets[exId];
+  // Get config for progress display
+  const session=getActiveSession();
+  const group=getGroup(session?.groupId);
+  const cfg=group?.exercises?.find(c=>c.exId===exId);
+  const tgt=cfg?.targetSets;
+  const done=s.length;
+  const card=document.getElementById('exc-'+exId);
+  if(card){
+    card.classList.toggle('has-sets',done>0);
+    const prog=card.querySelector('.set-progress');
+    if(prog){prog.textContent=tgt?done+'/'+tgt+' sets':done+' sets';prog.classList.toggle('on-target',tgt&&done>=tgt);}
+    const sl=document.getElementById('sets-'+exId);
+    if(sl) sl.innerHTML=s.map((st,i)=>`<div class="set-tag">${st.w?st.w+'kg × ':''}${st.r}r<span class="set-del" onclick="delSet('${exId}',${i})">×</span></div>`).join('');
+  }
+  rEl.value=''; rEl.focus();
 }
-
-function delSet(exId, idx) { deleteSetFromSession(exId, idx); }
+function delSet(exId,idx){delSetFromSession(exId,idx);}
 
 // ── WEEK ───────────────────────────────────────────────────────────────────
 function renderWeek() {
-  const dow = todayDow();
-  document.getElementById('weekContent').innerHTML = DAYS.map((day, i) => {
-    const g = db.schedule[i] ? getGroup(db.schedule[i]) : null;
+  const dow=todayDow();
+  document.getElementById('weekContent').innerHTML=DAYS.map((day,i)=>{
+    const g=db.schedule[i]?getGroup(db.schedule[i]):null;
     return `<div class="day-row${i===dow?' today':''}" onclick="openGroupPicker('week-${i}')">
-      <div class="day-name">${day}${i===dow?'<span class="today-badge">Today</span>':''}</div>
-      <div class="day-workout${g?'':' rest'}">${g ? g.name : 'Rest'}</div>
+      <div class="day-name-wrap"><div class="day-name">${day}</div>${i===dow?'<div class="today-badge">Today</div>':''}</div>
+      <div class="day-workout${g?'':' rest'}">${g?g.name:'Rest'}</div>
       <div class="day-chevron">›</div>
     </div>`;
   }).join('');
@@ -517,219 +594,221 @@ function renderWeek() {
 
 // ── HISTORY ────────────────────────────────────────────────────────────────
 function renderHistory() {
-  const sessions = [...db.sessions].reverse();
-  if (!sessions.length) {
-    document.getElementById('historyContent').innerHTML = `<div class="empty-state"><h2>No history yet</h2><p>Finish a session to see it here</p></div>`;
+  const sessions=[...db.sessions].reverse();
+  if(!sessions.length){
+    document.getElementById('historyContent').innerHTML=`<div class="empty-state"><h2>No history yet</h2><p>Finish a session to see it here</p></div>`;
     return;
   }
-  document.getElementById('historyContent').innerHTML = sessions.map(s => {
-    const g = getGroup(s.groupId);
-    const totalSets = Object.values(s.sets).reduce((a,b) => a+b.length, 0);
-    const vol = Object.values(s.sets).flat().reduce((a,b) => a+(b.w||0)*b.r, 0);
-    const exRows = Object.entries(s.sets).filter(([,sets])=>sets.length).map(([exId,sets]) => {
-      const ex = getEx(exId);
+  document.getElementById('historyContent').innerHTML=sessions.map(s=>{
+    const g=getGroup(s.groupId);
+    const totalSets=Object.values(s.sets).reduce((a,b)=>a+b.length,0);
+    const vol=Object.values(s.sets).flat().reduce((a,b)=>a+(b.w||0)*b.r,0);
+    const exRows=Object.entries(s.sets).filter(([,sets])=>sets.length).map(([exId,sets])=>{
+      const ex=getEx(exId);
       return `<div class="session-ex"><div class="session-ex-name">${ex?ex.name:exId}</div><div class="session-sets">${sets.map(st=>(st.w?st.w+'kg×':'')+st.r+'r').join(' · ')}</div></div>`;
     }).join('');
     return `<div class="session-card" onclick="this.querySelector('.session-body').classList.toggle('open')">
       <div class="session-header">
-        <div><div class="session-date">${fmtDate(s.date)}${!s.finished?' <span style="color:var(--green);font-size:.7rem">●</span>':''}</div><div class="session-group">${g?g.name:'Custom'}</div></div>
-        <div class="session-stats">${totalSets} sets${vol?'<br>'+vol+'kg vol':''}</div>
+        <div class="session-info"><div class="session-date">${fmtDate(s.date)}${!s.finished?' <span style="color:var(--green);font-size:.7rem">●</span>':''}</div><div class="session-group">${g?g.name:'Custom'}</div></div>
+        <div class="session-meta">${totalSets} sets${vol?'<br>'+vol+'kg vol':''}</div>
       </div>
-      <div class="session-body">${exRows||'<span style="color:var(--muted);font-size:.82rem">No sets logged</span>'}</div>
+      <div class="session-body">${exRows||'<span style="color:var(--muted);font-size:.8rem">No sets logged</span>'}</div>
     </div>`;
   }).join('');
 }
 
 // ── LIBRARY ────────────────────────────────────────────────────────────────
 function renderLibrary() {
-  let html = `<div class="section-title">Workout Groups</div>`;
-  db.groups.forEach(g => {
-    html += `<div class="list-item">
-      <div class="flex-1"><div class="list-item-name">${g.name}</div><div class="list-item-sub">${g.exerciseIds.length} exercises</div></div>
+  let html=`<div class="section-title">Workout Groups</div>`;
+  db.groups.forEach(g=>{
+    html+=`<div class="list-item">
+      <div class="list-item-text"><div class="list-item-name">${g.name}</div><div class="list-item-sub">${(g.exercises||[]).length} exercises</div></div>
       <div class="list-item-actions">
         <button class="icon-btn" onclick="openGroupEditor('${g.id}')">✏️</button>
         <button class="icon-btn" onclick="deleteGroup('${g.id}')">🗑</button>
       </div>
     </div>`;
   });
-  html += `<button class="btn btn-secondary btn-full" style="margin-bottom:20px" onclick="openGroupEditor(null)">+ New Workout Group</button>
-    <div class="section-title">Exercise Library</div>`;
-  CATS.forEach(cat => {
-    const exs = db.exercises.filter(e => e.cat === cat);
-    if (!exs.length) return;
-    html += `<div class="cat-group-label">${cat}</div>`;
-    exs.forEach(ex => {
-      html += `<div class="list-item" style="padding:9px 14px">
-        <div class="flex-1" style="font-size:.88rem;font-weight:600">${ex.name}</div>
+  html+=`<button class="btn btn-secondary btn-full" style="margin-bottom:20px" onclick="openGroupEditor(null)">+ New Workout Group</button><div class="section-title">Exercise Library</div>`;
+  CATS.forEach(cat=>{
+    const exs=db.exercises.filter(e=>e.cat===cat);
+    if(!exs.length)return;
+    html+=`<div class="cat-group-label">${cat}</div>`;
+    exs.forEach(ex=>{
+      html+=`<div class="list-item" style="padding:9px 14px">
+        <div class="list-item-text" style="font-size:.85rem;font-weight:600">${ex.name}</div>
         <button class="icon-btn" onclick="deleteExercise('${ex.id}')">×</button>
       </div>`;
     });
   });
-  html += `<button class="btn btn-secondary btn-full" style="margin-top:8px" onclick="openNewExModal()">+ Add Exercise</button>`;
-  document.getElementById('libraryContent').innerHTML = html;
+  html+=`<button class="btn btn-secondary btn-full" style="margin-top:8px">+ Add Exercise</button>`;
+  document.getElementById('libraryContent').innerHTML=html;
+  // re-attach click since onclick in innerHTML won't have closure
+  document.querySelector('#libraryContent .btn-secondary:last-child').onclick=openNewExModal;
 }
 
 function deleteGroup(id) {
-  if (!confirm('Delete this workout group?')) return;
-  db.groups = db.groups.filter(g => g.id !== id);
-  Object.keys(db.schedule).forEach(d => { if (db.schedule[d] === id) db.schedule[d] = null; });
+  if(!confirm('Delete this workout group?'))return;
+  db.groups=db.groups.filter(g=>g.id!==id);
+  Object.keys(db.schedule).forEach(d=>{if(db.schedule[d]===id)db.schedule[d]=null;});
   saveDB(); renderLibrary();
 }
-
 function deleteExercise(id) {
-  if (!confirm('Remove this exercise?')) return;
-  db.exercises = db.exercises.filter(e => e.id !== id);
-  db.groups.forEach(g => { g.exerciseIds = g.exerciseIds.filter(eid => eid !== id); });
+  if(!confirm('Remove this exercise?'))return;
+  db.exercises=db.exercises.filter(e=>e.id!==id);
+  db.groups.forEach(g=>{g.exercises=(g.exercises||[]).filter(c=>c.exId!==id);});
   saveDB(); renderLibrary();
 }
 
 // ── GROUP EDITOR ───────────────────────────────────────────────────────────
-let editingGroup = null;
+let editingGroup=null;
 
 function openGroupEditor(groupId) {
-  if (groupId) {
-    const g = getGroup(groupId);
-    editingGroup = {id: g.id, name: g.name, exerciseIds: [...g.exerciseIds]};
-    document.getElementById('groupEditorTitle').textContent = 'Edit Group';
+  if(groupId){
+    const g=getGroup(groupId);
+    editingGroup={id:g.id,name:g.name,exercises:clone(g.exercises||[])};
+    document.getElementById('groupEditorTitle').textContent='Edit Group';
   } else {
-    editingGroup = {id: null, name: '', exerciseIds: []};
-    document.getElementById('groupEditorTitle').textContent = 'New Group';
+    editingGroup={id:null,name:'',exercises:[]};
+    document.getElementById('groupEditorTitle').textContent='New Group';
   }
-  document.getElementById('groupEditorName').value = editingGroup.name;
+  document.getElementById('groupEditorName').value=editingGroup.name;
   renderGroupExList();
   document.getElementById('groupEditorOverlay').classList.add('open');
 }
 
 function renderGroupExList() {
-  document.getElementById('groupEditorExList').innerHTML = editingGroup.exerciseIds.map((exId, i) => {
-    const ex = getEx(exId);
+  document.getElementById('groupEditorExList').innerHTML=editingGroup.exercises.map((cfg,i)=>{
+    const ex=getEx(cfg.exId);
     return `<div class="group-ex-item">
-      <button class="order-btn" onclick="moveEx(${i},-1)" ${i===0?'disabled':''}>↑</button>
-      <button class="order-btn" onclick="moveEx(${i},1)" ${i===editingGroup.exerciseIds.length-1?'disabled':''}>↓</button>
-      <div class="group-ex-name">${ex?ex.name:exId} <span class="group-ex-cat">${ex?ex.cat:''}</span></div>
-      <button class="icon-btn" onclick="removeExAt(${i})">×</button>
+      <div class="group-ex-top">
+        <button class="order-btn" onclick="moveEx(${i},-1)" ${i===0?'disabled':''}>↑</button>
+        <button class="order-btn" onclick="moveEx(${i},1)" ${i===editingGroup.exercises.length-1?'disabled':''}>↓</button>
+        <div class="group-ex-name">${ex?ex.name:cfg.exId}</div>
+        <span class="group-ex-cat">${ex?ex.cat:''}</span>
+        <button class="icon-btn" style="margin-left:auto" onclick="removeExAt(${i})">×</button>
+      </div>
+      <div class="group-ex-targets">
+        <div class="group-ex-targets-wrap">
+          <input type="number" id="ts-${i}" value="${cfg.targetSets||''}" placeholder="3" min="1" max="10" oninput="updateExTarget(${i},'targetSets',this.value)"/>
+          <label>sets</label>
+        </div>
+        <span style="color:var(--muted);font-size:.75rem">×</span>
+        <div class="group-ex-targets-wrap">
+          <input type="number" id="tr-${i}" value="${cfg.targetReps||''}" placeholder="8" min="1" oninput="updateExTarget(${i},'targetReps',this.value)"/>
+          <label>reps</label>
+        </div>
+        <span style="color:var(--muted);font-size:.75rem">@</span>
+        <div class="group-ex-targets-wrap">
+          <input type="number" id="tw-${i}" value="${cfg.targetWeight||''}" placeholder="kg" min="0" step="2.5" oninput="updateExTarget(${i},'targetWeight',this.value)"/>
+          <label>kg</label>
+        </div>
+      </div>
     </div>`;
   }).join('');
 }
 
-function moveEx(i, dir) {
-  const a = editingGroup.exerciseIds, j = i+dir;
-  if (j < 0 || j >= a.length) return;
-  [a[i],a[j]] = [a[j],a[i]];
-  renderGroupExList();
+function updateExTarget(idx,key,val) {
+  editingGroup.exercises[idx][key]=val?parseFloat(val):null;
 }
-
-function removeExAt(i) { editingGroup.exerciseIds.splice(i,1); renderGroupExList(); }
-
+function moveEx(i,dir) {
+  const a=editingGroup.exercises,j=i+dir;
+  if(j<0||j>=a.length)return;
+  [a[i],a[j]]=[a[j],a[i]]; renderGroupExList();
+}
+function removeExAt(i) { editingGroup.exercises.splice(i,1); renderGroupExList(); }
 function saveGroup() {
-  const name = document.getElementById('groupEditorName').value.trim();
-  if (!name) { document.getElementById('groupEditorName').focus(); return; }
-  if (editingGroup.id) {
-    const g = getGroup(editingGroup.id);
-    g.name = name; g.exerciseIds = editingGroup.exerciseIds;
+  const name=document.getElementById('groupEditorName').value.trim();
+  if(!name){document.getElementById('groupEditorName').focus();return;}
+  if(editingGroup.id){
+    const g=getGroup(editingGroup.id); g.name=name; g.exercises=editingGroup.exercises;
   } else {
-    db.groups.push({id: uid(), name, exerciseIds: editingGroup.exerciseIds});
+    db.groups.push({id:uid(),name,exercises:editingGroup.exercises});
   }
   saveDB(); closeModal('groupEditorOverlay'); renderLibrary();
 }
 
 // ── EX PICKER ─────────────────────────────────────────────────────────────
 function openExPicker() {
-  document.getElementById('exSearch').value = '';
-  renderExPicker();
+  document.getElementById('exSearch').value=''; renderExPicker();
   document.getElementById('exPickerOverlay').classList.add('open');
 }
-
 function renderExPicker() {
-  const q = document.getElementById('exSearch').value.toLowerCase();
-  const available = db.exercises.filter(e => !editingGroup.exerciseIds.includes(e.id) && e.name.toLowerCase().includes(q));
-  let html = '';
-  CATS.forEach(cat => {
-    const exs = available.filter(e => e.cat === cat);
-    if (!exs.length) return;
-    if (!q) html += `<div class="cat-group-label">${cat}</div>`;
-    exs.forEach(ex => { html += `<div class="modal-option" onclick="addExToGroup('${ex.id}')">${ex.name}<span style="color:var(--muted);font-size:.75rem">${ex.cat}</span></div>`; });
+  const q=document.getElementById('exSearch').value.toLowerCase();
+  const taken=new Set(editingGroup.exercises.map(c=>c.exId));
+  const avail=db.exercises.filter(e=>!taken.has(e.id)&&e.name.toLowerCase().includes(q));
+  let html='';
+  CATS.forEach(cat=>{
+    const exs=avail.filter(e=>e.cat===cat);
+    if(!exs.length)return;
+    if(!q) html+=`<div class="cat-group-label">${cat}</div>`;
+    exs.forEach(ex=>{html+=`<div class="modal-option" onclick="addExToGroup('${ex.id}')"><span class="modal-option-name">${ex.name}</span><span style="color:var(--muted);font-size:.72rem">${ex.cat}</span></div>`;});
   });
-  document.getElementById('exPickerList').innerHTML = html || '<div style="color:var(--muted);padding:14px;text-align:center">No exercises found</div>';
+  document.getElementById('exPickerList').innerHTML=html||`<div style="color:var(--muted);padding:14px;text-align:center">No exercises found</div>`;
 }
-
 function addExToGroup(exId) {
-  if (!editingGroup.exerciseIds.includes(exId)) editingGroup.exerciseIds.push(exId);
-  closeModal('exPickerOverlay');
-  renderGroupExList();
+  editingGroup.exercises.push({exId,targetSets:3,targetReps:10,targetWeight:null});
+  closeModal('exPickerOverlay'); renderGroupExList();
 }
 
 // ── NEW EXERCISE ───────────────────────────────────────────────────────────
-let newExCat = 'Barbell';
-
+let newExCat='Barbell';
 function openNewExModal() {
-  newExCat = 'Barbell';
-  document.getElementById('newExName').value = '';
-  document.getElementById('catBtns').innerHTML = CATS.map(c =>
-    `<button class="preset${c===newExCat?' active':''}" onclick="selectCat('${c}')">${c}</button>`
-  ).join('');
+  newExCat='Barbell';
+  document.getElementById('newExName').value='';
+  document.getElementById('catBtns').innerHTML=CATS.map(c=>`<button class="preset${c===newExCat?' active':''}" onclick="selectCat('${c}')">${c}</button>`).join('');
   document.getElementById('newExOverlay').classList.add('open');
 }
-
 function selectCat(cat) {
-  newExCat = cat;
-  document.querySelectorAll('#catBtns .preset').forEach(b => b.classList.toggle('active', b.textContent === cat));
+  newExCat=cat;
+  document.querySelectorAll('#catBtns .preset').forEach(b=>b.classList.toggle('active',b.textContent===cat));
 }
-
 function saveNewExercise() {
-  const name = document.getElementById('newExName').value.trim();
-  if (!name) { document.getElementById('newExName').focus(); return; }
-  db.exercises.push({id: uid(), name, cat: newExCat});
-  saveDB(); closeModal('newExOverlay'); renderLibrary();
+  const name=document.getElementById('newExName').value.trim();
+  if(!name){document.getElementById('newExName').focus();return;}
+  db.exercises.push({id:uid(),name,cat:newExCat}); saveDB(); closeModal('newExOverlay'); renderLibrary();
 }
 
 // ── GROUP PICKER ───────────────────────────────────────────────────────────
-let pickerCtx = null;
-
+let pickerCtx=null;
 function openGroupPicker(ctx) {
-  pickerCtx = ctx;
-  const isWeek = ctx.startsWith('week-');
-  const dow = isWeek ? parseInt(ctx.split('-')[1]) : null;
-  const currentId = dow !== null ? db.schedule[dow] : null;
-  document.getElementById('groupPickerTitle').textContent = isWeek ? `${DAYS[dow]} — Assign Workout` : 'Choose Workout';
-  let html = '';
-  if (isWeek) html += `<div class="modal-option${!currentId?' selected':''}" onclick="assignGroup(null)">Rest ${!currentId?'✓':''}</div>`;
-  db.groups.forEach(g => {
-    html += `<div class="modal-option${g.id===currentId?' selected':''}" onclick="assignGroup('${g.id}')">${g.name} ${g.id===currentId?'✓':''}</div>`;
+  pickerCtx=ctx;
+  const isWeek=ctx.startsWith('week-');
+  const dow=isWeek?parseInt(ctx.split('-')[1]):null;
+  const currentId=dow!==null?db.schedule[dow]:null;
+  document.getElementById('groupPickerTitle').textContent=isWeek?`${DAYS[dow]} — Assign Workout`:'Choose Workout';
+  let html='';
+  if(isWeek) html+=`<div class="modal-option${!currentId?' selected':''}" onclick="assignGroup(null)"><span class="modal-option-name">Rest</span>${!currentId?'✓':''}</div>`;
+  db.groups.forEach(g=>{
+    html+=`<div class="modal-option${g.id===currentId?' selected':''}" onclick="assignGroup('${g.id}')"><span class="modal-option-name">${g.name}</span>${g.id===currentId?'✓':''}</div>`;
   });
-  document.getElementById('groupPickerList').innerHTML = html;
+  document.getElementById('groupPickerList').innerHTML=html;
   document.getElementById('groupPickerOverlay').classList.add('open');
 }
-
 function assignGroup(groupId) {
-  const ctx = pickerCtx;
-  closeModal('groupPickerOverlay');
-  if (ctx.startsWith('week-')) {
-    db.schedule[parseInt(ctx.split('-')[1])] = groupId;
-    saveDB(); renderWeek();
+  const ctx=pickerCtx; closeModal('groupPickerOverlay');
+  if(ctx.startsWith('week-')){
+    db.schedule[parseInt(ctx.split('-')[1])]=groupId; saveDB(); renderWeek();
   } else {
-    if (!groupId) return;
-    const s = getActiveSession();
-    if (s) { s.groupId = groupId; saveDB(); }
-    else { startSession(groupId); }
+    if(!groupId)return;
+    const s=getActiveSession();
+    if(s){s.groupId=groupId;saveDB();}else{startSession(groupId);}
     renderToday();
   }
 }
 
 // ── MODALS ─────────────────────────────────────────────────────────────────
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function overlayClose(e, id) { if (e.target === e.currentTarget) closeModal(id); }
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function overlayClose(e,id){if(e.target===e.currentTarget)closeModal(id);}
 
 // ── INIT ───────────────────────────────────────────────────────────────────
-loadDB();
-updateTimerUI();
-renderToday();
+loadDB(); updateTimerUI(); renderToday();
 
-document.addEventListener('keydown', e => {
-  if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
-  const id = e.target.id;
-  if (id.startsWith('r-')) logSet(id.slice(2));
-  else if (id.startsWith('w-')) document.getElementById('r-' + id.slice(2))?.focus();
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Enter'||e.target.tagName!=='INPUT')return;
+  const id=e.target.id;
+  if(id.startsWith('r-'))logSet(id.slice(2));
+  else if(id.startsWith('w-'))document.getElementById('r-'+id.slice(2))?.focus();
 });
 </script>
 </body>
