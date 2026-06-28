@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Workout</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --card: #1c1c1e;
+      --accent: #ff6b35;
+      --accent2: #ff9f1c;
+      --text: #f0f0f0;
+      --muted: #8e8e93;
+      --green: #30d158;
+      --red: #ff453a;
+      --radius: 16px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100dvh;
+      padding: 16px;
+      padding-bottom: 32px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-top: 8px;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .reset-btn {
+      background: none;
+      border: 1px solid var(--muted);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .reset-btn:active { opacity: 0.6; }
+
+    /* Timer */
+    .timer-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .timer-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .timer-display {
+      font-size: 3.5rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -2px;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 16px;
+      transition: color 0.3s;
+    }
+
+    .timer-display.running { color: var(--green); }
+    .timer-display.warning { color: var(--red); }
+
+    .timer-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .timer-btn {
+      flex: 1;
+      max-width: 120px;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: opacity 0.15s;
+    }
+    .timer-btn:active { opacity: 0.7; }
+
+    #startStopBtn { background: var(--green); color: #000; }
+    #startStopBtn.running { background: var(--red); color: #fff; }
+    #resetTimerBtn { background: #2c2c2e; color: var(--text); }
+
+    .timer-presets {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      background: #2c2c2e;
+      border: 1px solid #3a3a3c;
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .preset-btn:active, .preset-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* Exercises */
+    .exercises { display: flex; flex-direction: column; gap: 14px; }
+
+    .exercise-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px;
+      border-left: 4px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .exercise-card.has-sets { border-left-color: var(--accent); }
+
+    .exercise-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .exercise-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .set-count {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: #2c2c2e;
+      border-radius: 8px;
+      padding: 4px 10px;
+    }
+
+    .set-count span { color: var(--accent); font-weight: 700; }
+
+    .sets-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+      min-height: 36px;
+    }
+
+    .set-tag {
+      background: #2c2c2e;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .set-tag .del {
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0 2px;
+      touch-action: manipulation;
+    }
+    .set-tag .del:active { color: var(--red); }
+
+    .log-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .log-row input {
+      flex: 1;
+      background: #2c2c2e;
+      border: 1px solid #3a3a3c;
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 1rem;
+      padding: 10px 12px;
+      text-align: center;
+      -moz-appearance: textfield;
+      outline: none;
+    }
+    .log-row input::-webkit-inner-spin-button,
+    .log-row input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .log-row input:focus { border-color: var(--accent); }
+
+    .log-row .sep { color: var(--muted); font-size: 0.9rem; }
+
+    .add-set-btn {
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      cursor: pointer;
+      white-space: nowrap;
+      touch-action: manipulation;
+      transition: opacity 0.15s;
+    }
+    .add-set-btn:active { opacity: 0.7; }
+
+    .start-rest-btn {
+      width: 100%;
+      background: #2c2c2e;
+      border: 1px solid #3a3a3c;
+      border-radius: 10px;
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 9px;
+      margin-top: 10px;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .start-rest-btn:active { opacity: 0.7; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Workout</h1>
+  <button class="reset-btn" onclick="resetAll()">Reset</button>
+</header>
+
+<!-- Timer -->
+<div class="timer-card">
+  <div class="timer-label">Rest Timer</div>
+  <div class="timer-display" id="timerDisplay">1:30</div>
+  <div class="timer-controls">
+    <button class="timer-btn" id="startStopBtn" onclick="toggleTimer()">Start</button>
+    <button class="timer-btn" id="resetTimerBtn" onclick="resetTimer()">Reset</button>
+  </div>
+  <div class="timer-presets">
+    <button class="preset-btn" onclick="setPreset(60)">1 min</button>
+    <button class="preset-btn active" onclick="setPreset(90)">1:30</button>
+    <button class="preset-btn" onclick="setPreset(120)">2 min</button>
+    <button class="preset-btn" onclick="setPreset(180)">3 min</button>
+  </div>
+</div>
+
+<!-- Exercises -->
+<div class="exercises" id="exercises"></div>
+
+<script>
+  const EXERCISES = ['Bench', 'Squat', 'Chin Ups'];
+
+  // ── Timer ─────────────────────────────────────────────────────────────────
+  let timerDuration = 90;
+  let timerRemaining = 90;
+  let timerInterval = null;
+  let timerRunning = false;
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m}:${sec.toString().padStart(2, '0')}`;
+  }
+
+  function updateTimerDisplay() {
+    const el = document.getElementById('timerDisplay');
+    el.textContent = formatTime(timerRemaining);
+    el.className = 'timer-display' +
+      (timerRunning && timerRemaining > 10 ? ' running' :
+       timerRunning && timerRemaining <= 10 ? ' warning' : '');
+  }
+
+  function toggleTimer() {
+    if (timerRunning) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      document.getElementById('startStopBtn').textContent = 'Start';
+      document.getElementById('startStopBtn').classList.remove('running');
+    } else {
+      if (timerRemaining === 0) timerRemaining = timerDuration;
+      timerRunning = true;
+      document.getElementById('startStopBtn').textContent = 'Stop';
+      document.getElementById('startStopBtn').classList.add('running');
+      timerInterval = setInterval(() => {
+        timerRemaining--;
+        updateTimerDisplay();
+        if (timerRemaining <= 0) {
+          clearInterval(timerInterval);
+          timerRunning = false;
+          timerRemaining = 0;
+          document.getElementById('startStopBtn').textContent = 'Start';
+          document.getElementById('startStopBtn').classList.remove('running');
+          if ('vibrate' in navigator) navigator.vibrate([200, 100, 200]);
+        }
+      }, 1000);
+    }
+    updateTimerDisplay();
+  }
+
+  function resetTimer() {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerRemaining = timerDuration;
+    document.getElementById('startStopBtn').textContent = 'Start';
+    document.getElementById('startStopBtn').classList.remove('running');
+    updateTimerDisplay();
+  }
+
+  function setPreset(seconds) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerDuration = seconds;
+    timerRemaining = seconds;
+    document.getElementById('startStopBtn').textContent = 'Start';
+    document.getElementById('startStopBtn').classList.remove('running');
+    document.querySelectorAll('.preset-btn').forEach(b => {
+      b.classList.toggle('active', parseInt(b.getAttribute('onclick').match(/\d+/)[0]) === seconds);
+    });
+    updateTimerDisplay();
+  }
+
+  function startRest() {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerRemaining = timerDuration;
+    updateTimerDisplay();
+    toggleTimer();
+    document.querySelector('.timer-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ── Exercises ─────────────────────────────────────────────────────────────
+  const state = {}; // { name: [{reps, weight}] }
+  EXERCISES.forEach(n => state[n] = []);
+
+  function renderExercises() {
+    const container = document.getElementById('exercises');
+    container.innerHTML = '';
+    EXERCISES.forEach(name => {
+      const sets = state[name];
+      const card = document.createElement('div');
+      card.className = 'exercise-card' + (sets.length ? ' has-sets' : '');
+      card.innerHTML = `
+        <div class="exercise-header">
+          <div class="exercise-name">${name}</div>
+          <div class="set-count"><span>${sets.length}</span> set${sets.length !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="sets-list">
+          ${sets.map((s, i) => `
+            <div class="set-tag">
+              ${s.weight ? s.weight + 'kg × ' : ''}${s.reps} rep${s.reps !== 1 ? 's' : ''}
+              <span class="del" onclick="deleteSet('${name}', ${i})">×</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="log-row">
+          <input type="number" id="w-${name}" placeholder="kg" min="0" step="2.5" />
+          <span class="sep">×</span>
+          <input type="number" id="r-${name}" placeholder="reps" min="1" step="1" value="" />
+          <button class="add-set-btn" onclick="addSet('${name}')">+ Set</button>
+        </div>
+        <button class="start-rest-btn" onclick="startRest()">⏱ Start Rest</button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function addSet(name) {
+    const repsEl = document.getElementById(`r-${name}`);
+    const weightEl = document.getElementById(`w-${name}`);
+    const reps = parseInt(repsEl.value);
+    if (!reps || reps < 1) { repsEl.focus(); return; }
+    const weight = parseFloat(weightEl.value) || null;
+    state[name].push({ reps, weight });
+    repsEl.value = '';
+    renderExercises();
+    // Re-focus reps for quick re-entry
+    document.getElementById(`r-${name}`).focus();
+  }
+
+  function deleteSet(name, index) {
+    state[name].splice(index, 1);
+    renderExercises();
+  }
+
+  function resetAll() {
+    if (!confirm('Reset all sets?')) return;
+    EXERCISES.forEach(n => state[n] = []);
+    resetTimer();
+    renderExercises();
+  }
+
+  // Allow Enter key to log a set
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
+      const id = e.target.id;
+      const name = id.split('-').slice(1).join('-');
+      if (EXERCISES.includes(name)) addSet(name);
+    }
+  });
+
+  // Init
+  updateTimerDisplay();
+  renderExercises();
+</script>
+</body>
+</html>
