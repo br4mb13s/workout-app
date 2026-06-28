@@ -417,7 +417,7 @@ function loadDB() {
 function saveDB() { localStorage.setItem('wapp_v3', JSON.stringify(db)); }
 function clone(x) { return JSON.parse(JSON.stringify(x)); }
 function uid() { return '_' + Math.random().toString(36).slice(2,9); }
-function todayStr() { return new Date().toISOString().slice(0,10); }
+function todayStr() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function todayDow() { return new Date().getDay(); }
 function getEx(id) { return db.exercises.find(e => e.id === id); }
 function getGroup(id) { return db.groups.find(g => g.id === id); }
@@ -437,7 +437,13 @@ function startSession(groupId) {
 }
 function finishSession() {
   const s = getActiveSession(); if (!s) return;
-  s.finished = true; saveDB(); stopElapsedTimer(); renderToday();
+  s.finished = true; s.finishedTs = Date.now(); saveDB(); stopElapsedTimer(); renderToday();
+}
+function cancelSession() {
+  if (!confirm('Cancel this session? All logged sets will be lost.')) return;
+  const s = getActiveSession(); if (!s) return;
+  db.sessions = db.sessions.filter(x => x.id !== s.id);
+  saveDB(); stopElapsedTimer(); skipTimer(); renderToday();
 }
 function logSetToSession(exId, w, r) {
   const s = getActiveSession(); if (!s) return;
@@ -559,7 +565,7 @@ function renderToday() {
   group = getGroup(session.groupId);
   const exConfigs = group ? group.exercises : Object.keys(session.sets).map(exId=>({exId,targetSets:null,targetReps:null,targetWeight:null}));
 
-  let html = `<div class="finish-bar"><span>Session active</span><button class="btn btn-sm btn-green" onclick="finishSession()">Finish ✓</button></div>`;
+  let html = `<div class="finish-bar"><span>Session active</span><div style="display:flex;gap:8px"><button class="btn btn-sm btn-ghost" onclick="cancelSession()">Cancel</button><button class="btn btn-sm btn-green" onclick="finishSession()">Finish ✓</button></div></div>`;
 
   exConfigs.forEach(cfg => {
     const ex = getEx(cfg.exId); if (!ex) return;
@@ -697,7 +703,7 @@ function renderHistory() {
     const g = getGroup(s.groupId);
     const totalSets = Object.values(s.sets).reduce((a,b) => a+b.length, 0);
     const vol = Object.values(s.sets).flat().reduce((a,b) => a+(b.w||0)*b.r, 0);
-    const dur = (s.startTs && s.finished) ? fmtElapsed(s.finished===true ? 0 : 0) : '';
+    const dur = (s.startTs && s.finishedTs) ? fmtElapsed(s.finishedTs - s.startTs) : '';
     const exRows = Object.entries(s.sets).filter(([,sets]) => sets.length).map(([exId,sets]) => {
       const ex = getEx(exId);
       return `<div class="session-ex"><div class="session-ex-name">${ex?ex.name:exId}</div><div class="session-sets">${sets.map(st=>(st.w?st.w+'kg×':'')+st.r+'r').join(' · ')}</div></div>`;
@@ -708,7 +714,7 @@ function renderHistory() {
           <div class="session-date">${fmtDate(s.date)}${!s.finished?' <span style="color:var(--green);font-size:.7rem">●</span>':''}</div>
           <div class="session-group">${g?g.name:'Custom'}</div>
         </div>
-        <div class="session-meta">${totalSets} sets${vol?'<br>'+vol+'kg':''}</div>
+        <div class="session-meta">${totalSets} sets${vol?'<br>'+vol+'kg':''}${dur?'<br>'+dur:''}</div>
       </div>
       <div class="session-body">${exRows||'<span style="color:var(--muted);font-size:.8rem">No sets logged</span>'}</div>
     </div>`;
