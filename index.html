@@ -4,169 +4,175 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Workout</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0f0f0f; --card: #1c1c1e; --card2: #2c2c2e; --border: #3a3a3c;
-      --accent: #ff6b35; --accent2: #ff9f1c; --text: #f0f0f0; --muted: #8e8e93;
-      --green: #30d158; --red: #ff453a; --radius: 14px; --nav-h: 62px;
+      --bg: #f3efe6; --card: #fffdf9; --card2: #ede9e0; --border: #d8d2c8;
+      --accent: #d2724f; --accent2: #e8956a; --text: #211e19; --muted: #6b6560;
+      --green: #4a8c5c; --red: #b83c2f; --radius: 16px; --nav-h: 68px;
     }
     html, body { height: 100%; overflow-x: hidden; }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 16px; }
-
+    body { background: var(--bg); color: var(--text); font-family: 'Hanken Grotesk', -apple-system, sans-serif; font-size: 16px; }
     #app { max-width: 480px; margin: 0 auto; min-height: 100dvh; }
-
-    .view { display: none; padding: 0 14px calc(var(--nav-h) + 16px); min-height: 100dvh; }
+    .view { display: none; padding: 0 16px calc(var(--nav-h) + 20px); min-height: 100dvh; }
     .view.active { display: block; }
 
     /* nav */
-    nav {
-      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-      width: 100%; max-width: 480px; height: var(--nav-h);
-      background: var(--card); border-top: 1px solid var(--border);
-      display: flex; z-index: 100; padding-bottom: env(safe-area-inset-bottom, 0);
-    }
-    .nav-tab {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 3px; cursor: pointer; color: var(--muted);
-      font-size: 0.6rem; border: none; background: none;
-      touch-action: manipulation; -webkit-tap-highlight-color: transparent; padding: 6px 0;
-    }
+    nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: var(--nav-h); background: var(--card); border-top: 1px solid var(--border); display: flex; z-index: 100; padding-bottom: env(safe-area-inset-bottom, 0); }
+    .nav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; color: var(--muted); font-size: 0.58rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; border: none; background: none; touch-action: manipulation; -webkit-tap-highlight-color: transparent; padding: 6px 0; font-family: inherit; }
     .nav-tab.active { color: var(--accent); }
-    .nav-tab svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .nav-tab svg { width: 22px; height: 22px; flex-shrink: 0; }
 
-    /* page header */
-    .page-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 0 16px; }
-    .page-title { font-size: 1.5rem; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .page-title.grad { background: linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    /* header */
+    .page-header { display: flex; justify-content: space-between; align-items: center; padding: 18px 0 14px; }
+    .page-title { font-size: 1.7rem; font-weight: 800; color: var(--text); }
 
     /* buttons */
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; border: none; border-radius: 10px; font-weight: 600; padding: 11px 16px; cursor: pointer; touch-action: manipulation; transition: opacity .15s; -webkit-tap-highlight-color: transparent; white-space: nowrap; font-size: 0.875rem; }
-    .btn:active { opacity: .65; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; border: none; border-radius: 12px; font-weight: 700; padding: 12px 18px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; white-space: nowrap; font-size: 0.875rem; font-family: inherit; }
+    .btn:active { opacity: .72; }
     .btn-primary { background: var(--accent); color: #fff; }
-    .btn-secondary { background: var(--card2); color: var(--text); }
-    .btn-ghost { background: none; border: 1px solid var(--border); color: var(--muted); }
-    .btn-green { background: var(--green); color: #000; }
+    .btn-secondary { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost { background: none; border: 1.5px solid var(--border); color: var(--muted); }
+    .btn-green { background: var(--green); color: #fff; }
     .btn-red { background: var(--red); color: #fff; }
     .btn-full { width: 100%; }
-    .btn-sm { padding: 7px 12px; font-size: 0.8rem; }
+    .btn-sm { padding: 8px 14px; font-size: 0.8rem; }
 
     /* card */
-    .card { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+    .card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
 
     /* timer */
-    .timer-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); text-align: center; }
-    .timer-display { font-size: clamp(2.8rem, 10vw, 3.5rem); font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -2px; color: var(--accent); text-align: center; line-height: 1; margin: 6px 0 14px; }
-    .timer-display.running { color: var(--green); }
-    .timer-display.warning { color: var(--red); }
-    .timer-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 10px; }
-    .timer-row .btn { flex: 1; max-width: 130px; }
-    .presets { display: flex; gap: 6px; justify-content: center; }
-    .preset { background: var(--card2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 5px 11px; font-size: .78rem; cursor: pointer; touch-action: manipulation; }
-    .preset.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .timer-card { background: var(--card); border-radius: var(--radius); padding: 18px 16px 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+    .timer-idle { text-align: center; }
+    .timer-idle-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+    .timer-idle-time { font-size: 2.4rem; font-weight: 400; color: var(--text); font-family: 'Newsreader', Georgia, serif; font-style: italic; letter-spacing: -1px; }
+    .timer-rest { display: none; }
+    .timer-rest.active { display: block; }
+    .timer-idle.hidden { display: none; }
+    .arc-wrap { position: relative; width: 116px; height: 116px; margin: 0 auto 14px; }
+    .arc-wrap svg { width: 116px; height: 116px; transform: rotate(-90deg); }
+    .arc-bg { fill: none; stroke: var(--border); stroke-width: 7; }
+    .arc-fg { fill: none; stroke: var(--accent); stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset .95s linear; }
+    .arc-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+    .timer-count { font-size: 1.65rem; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--text); letter-spacing: -1px; }
+    .timer-count.warning { color: var(--red); }
+    .timer-controls { display: flex; gap: 8px; }
+    .t-adj { flex: 1; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: .82rem; font-weight: 700; padding: 9px 4px; cursor: pointer; touch-action: manipulation; text-align: center; font-family: inherit; }
+    .t-adj:active { background: var(--border); }
+    .t-skip { flex: 2; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: .82rem; font-weight: 700; padding: 9px 4px; cursor: pointer; touch-action: manipulation; font-family: inherit; }
+    .t-skip:active { opacity: .8; }
 
     /* exercise cards */
-    .ex-card { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; border-left: 4px solid transparent; }
-    .ex-card.has-sets { border-left-color: var(--accent); }
-    .ex-card-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; min-width: 0; }
+    .ex-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; border: 1.5px solid var(--border); transition: border-color .2s; }
+    .ex-card.has-sets { border-color: var(--accent); }
+    .ex-card-header { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; min-width: 0; }
     .ex-card-info { flex: 1; min-width: 0; }
     .ex-name { font-size: 1rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .ex-cat { font-size: .68rem; color: var(--muted); margin-top: 1px; }
-    .ex-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
-    .set-progress { font-size: .72rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+    .ex-cat { font-size: .65rem; color: var(--muted); margin-top: 2px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .ex-card-right { flex-shrink: 0; }
+    .set-progress { font-size: .75rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
     .set-progress.on-target { color: var(--green); }
 
-    .target-badge { display: inline-block; font-size: .68rem; color: var(--accent2); background: rgba(255,159,28,.1); border-radius: 6px; padding: 2px 7px; margin-bottom: 8px; }
-
-    .prev-best { font-size: .7rem; color: var(--muted); background: var(--card2); border-radius: 8px; padding: 6px 10px; margin-bottom: 8px; line-height: 1.4; }
+    .target-badge { display: inline-block; font-size: .7rem; color: var(--accent); background: rgba(210,114,79,.1); border-radius: 8px; padding: 3px 9px; margin-bottom: 10px; font-weight: 600; border: 1px solid rgba(210,114,79,.2); }
+    .prev-best { font-size: .72rem; color: var(--muted); background: var(--card2); border-radius: 10px; padding: 7px 11px; margin-bottom: 10px; line-height: 1.4; border: 1px solid var(--border); }
     .prev-best strong { color: var(--text); }
 
-    .sets-list { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; min-height: 28px; }
-    .set-tag { background: var(--card2); border-radius: 7px; padding: 4px 8px; font-size: .78rem; display: flex; align-items: center; gap: 4px; }
-    .set-del { color: var(--muted); cursor: pointer; padding: 0 2px; touch-action: manipulation; font-size: .95rem; line-height: 1; }
-    .set-del:active { color: var(--red); }
+    /* set toggles */
+    .set-toggles { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .set-toggle { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--border); background: var(--card2); color: var(--muted); font-size: .875rem; font-weight: 700; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; display: flex; align-items: center; justify-content: center; transition: background .15s, border-color .15s, color .15s; font-family: inherit; flex-shrink: 0; }
+    .set-toggle.done { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .set-toggle:active { transform: scale(.88); }
 
-    .log-row { display: flex; gap: 5px; align-items: stretch; }
-    .log-row input { flex: 1; min-width: 0; background: var(--card2); border: 1px solid var(--border); border-radius: 9px; color: var(--text); font-size: .95rem; padding: 9px 6px; text-align: center; outline: none; -moz-appearance: textfield; width: 100%; }
+    /* weight/reps inputs under toggles */
+    .log-row { display: flex; gap: 6px; align-items: stretch; margin-bottom: 10px; }
+    .log-row input { flex: 1; min-width: 0; background: var(--card2); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-size: .9rem; padding: 9px 6px; text-align: center; outline: none; -moz-appearance: textfield; width: 100%; font-family: inherit; }
     .log-row input::-webkit-inner-spin-button, .log-row input::-webkit-outer-spin-button { -webkit-appearance: none; }
     .log-row input:focus { border-color: var(--accent); }
     .log-sep { color: var(--muted); font-size: .8rem; display: flex; align-items: center; flex-shrink: 0; }
-    .log-row .btn-sm { flex-shrink: 0; padding: 9px 14px; }
 
-    .rest-btn { width: 100%; background: none; border: 1px solid var(--border); border-radius: 9px; color: var(--muted); font-size: .78rem; font-weight: 600; padding: 7px; margin-top: 8px; cursor: pointer; touch-action: manipulation; }
-    .rest-btn:active { background: var(--card2); }
+    .rest-trigger { width: 100%; background: none; border: 1.5px solid var(--border); border-radius: 10px; color: var(--muted); font-size: .78rem; font-weight: 600; padding: 8px; cursor: pointer; touch-action: manipulation; font-family: inherit; }
+    .rest-trigger:active { background: var(--card2); }
 
     /* finish bar */
-    .finish-bar { background: rgba(48,209,88,.12); border: 1px solid rgba(48,209,88,.3); border-radius: var(--radius); padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
-    .finish-bar span { color: var(--green); font-weight: 600; font-size: .88rem; }
+    .finish-bar { background: rgba(74,140,92,.1); border: 1.5px solid rgba(74,140,92,.3); border-radius: var(--radius); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
+    .finish-bar span { color: var(--green); font-weight: 700; font-size: .88rem; }
 
     /* empty state */
-    .empty-state { text-align: center; padding: 56px 20px; }
-    .empty-state h2 { font-size: 1.15rem; margin-bottom: 8px; }
-    .empty-state p { color: var(--muted); font-size: .88rem; margin-bottom: 22px; line-height: 1.5; }
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-state h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+    .empty-state p { color: var(--muted); font-size: .88rem; margin-bottom: 24px; line-height: 1.6; }
 
     /* week */
-    .day-row { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; border: 1px solid transparent; }
+    .day-row { background: var(--card); border-radius: var(--radius); padding: 15px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; border: 1.5px solid var(--border); }
     .day-row.today { border-color: var(--accent); }
     .day-name-wrap { display: flex; align-items: center; gap: 7px; min-width: 44px; flex-shrink: 0; }
     .day-name { font-weight: 700; font-size: .95rem; }
-    .today-badge { font-size: .6rem; background: rgba(255,107,53,.18); color: var(--accent); border-radius: 5px; padding: 2px 6px; font-weight: 700; flex-shrink: 0; }
+    .today-badge { font-size: .6rem; background: rgba(210,114,79,.18); color: var(--accent); border-radius: 6px; padding: 2px 6px; font-weight: 700; flex-shrink: 0; }
     .day-workout { flex: 1; min-width: 0; font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .day-workout.rest { color: var(--muted); font-style: italic; }
     .day-chevron { color: var(--border); font-size: 1.2rem; flex-shrink: 0; }
 
     /* history */
-    .session-card { background: var(--card); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    .session-card { background: var(--card); border-radius: var(--radius); padding: 16px; margin-bottom: 10px; cursor: pointer; -webkit-tap-highlight-color: transparent; border: 1px solid var(--border); }
     .session-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
     .session-info { min-width: 0; flex: 1; }
     .session-date { font-weight: 700; font-size: .92rem; }
-    .session-group { font-size: .75rem; color: var(--accent); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .session-group { font-size: .75rem; color: var(--accent); margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
     .session-meta { font-size: .75rem; color: var(--muted); text-align: right; line-height: 1.6; flex-shrink: 0; }
     .session-body { margin-top: 12px; display: none; border-top: 1px solid var(--border); padding-top: 10px; }
     .session-body.open { display: block; }
     .session-ex { padding: 5px 0; border-bottom: 1px solid var(--border); font-size: .8rem; }
     .session-ex:last-child { border-bottom: none; }
-    .session-ex-name { font-weight: 600; margin-bottom: 2px; }
+    .session-ex-name { font-weight: 700; margin-bottom: 2px; }
     .session-sets { color: var(--muted); word-break: break-word; }
 
     /* library */
-    .section-title { font-size: .68rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 18px 0 8px; }
-    .list-item { background: var(--card); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .lib-tabs { display: flex; background: var(--card2); border-radius: 12px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--border); gap: 4px; }
+    .lib-tab { flex: 1; text-align: center; padding: 8px; font-size: .82rem; font-weight: 700; border-radius: 9px; cursor: pointer; color: var(--muted); touch-action: manipulation; border: none; background: none; font-family: inherit; transition: all .15s; }
+    .lib-tab.active { background: var(--card); color: var(--accent); box-shadow: 0 1px 4px rgba(33,30,25,.1); }
+    .section-title { font-size: .65rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 18px 0 8px; font-weight: 700; }
+    .list-item { background: var(--card); border-radius: var(--radius); padding: 13px 15px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; border: 1px solid var(--border); }
     .list-item-text { flex: 1; min-width: 0; }
-    .list-item-name { font-size: .92rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .list-item-name { font-size: .92rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .list-item-sub { font-size: .72rem; color: var(--muted); margin-top: 2px; }
     .list-item-actions { display: flex; gap: 4px; flex-shrink: 0; }
-    .icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: 6px 8px; font-size: .95rem; touch-action: manipulation; border-radius: 7px; }
+    .icon-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: 6px 8px; font-size: .95rem; touch-action: manipulation; border-radius: 8px; font-family: inherit; }
     .icon-btn:active { background: var(--card2); color: var(--red); }
-    .cat-group-label { font-size: .72rem; color: var(--muted); font-weight: 600; margin: 10px 0 5px; }
+    .cat-group-label { font-size: .68rem; color: var(--muted); font-weight: 700; margin: 12px 0 5px; text-transform: uppercase; letter-spacing: .06em; }
 
     /* modals */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.78); z-index: 200; align-items: flex-end; -webkit-tap-highlight-color: transparent; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(33,30,25,.6); z-index: 200; align-items: flex-end; -webkit-tap-highlight-color: transparent; }
     .modal-overlay.open { display: flex; }
-    .modal { background: #1c1c1e; border-radius: 20px 20px 0 0; padding: 12px 16px calc(20px + env(safe-area-inset-bottom,0)); width: 100%; max-width: 480px; margin: 0 auto; max-height: 88dvh; overflow-y: auto; overscroll-behavior: contain; }
-    .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
-    .modal-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 14px; }
-    .modal-option { padding: 13px 10px; border-radius: 10px; cursor: pointer; font-size: .9rem; display: flex; align-items: center; justify-content: space-between; gap: 8px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+    .modal { background: var(--card); border-radius: 24px 24px 0 0; padding: 12px 16px calc(20px + env(safe-area-inset-bottom,0)); width: 100%; max-width: 480px; margin: 0 auto; max-height: 88dvh; overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid var(--border); }
+    .modal-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 16px; }
+    .modal-title { font-size: 1.05rem; font-weight: 800; margin-bottom: 14px; }
+    .modal-option { padding: 13px 10px; border-radius: 12px; cursor: pointer; font-size: .9rem; display: flex; align-items: center; justify-content: space-between; gap: 8px; touch-action: manipulation; -webkit-tap-highlight-color: transparent; font-weight: 500; }
     .modal-option:active { background: var(--card2); }
-    .modal-option.selected { background: var(--card2); color: var(--accent); }
+    .modal-option.selected { background: rgba(210,114,79,.1); color: var(--accent); font-weight: 700; }
     .modal-option-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .modal-input { width: 100%; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: .95rem; padding: 11px 13px; outline: none; margin-bottom: 12px; }
+    .modal-input { width: 100%; background: var(--card2); border: 1.5px solid var(--border); border-radius: 12px; color: var(--text); font-size: .95rem; padding: 12px 14px; outline: none; margin-bottom: 12px; font-family: inherit; }
     .modal-input:focus { border-color: var(--accent); }
 
-    /* group editor exercise row */
-    .group-ex-item { background: var(--card2); border-radius: 10px; padding: 10px 12px; margin-bottom: 6px; }
-    .group-ex-top { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
-    .group-ex-name { flex: 1; min-width: 0; font-size: .88rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .group-ex-cat { font-size: .65rem; color: var(--muted); flex-shrink: 0; }
+    /* group editor */
+    .group-ex-item { background: var(--card2); border-radius: 12px; padding: 11px 13px; margin-bottom: 8px; border: 1px solid var(--border); }
+    .group-ex-top { display: flex; align-items: center; gap: 6px; margin-bottom: 9px; }
+    .group-ex-name { flex: 1; min-width: 0; font-size: .88rem; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .group-ex-cat { font-size: .62rem; color: var(--muted); flex-shrink: 0; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
     .group-ex-targets { display: flex; gap: 6px; align-items: center; }
-    .group-ex-targets input { flex: 1; min-width: 0; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: .82rem; padding: 6px 4px; text-align: center; outline: none; -moz-appearance: textfield; }
+    .group-ex-targets input { flex: 1; min-width: 0; background: var(--card); border: 1.5px solid var(--border); border-radius: 9px; color: var(--text); font-size: .82rem; padding: 7px 4px; text-align: center; outline: none; -moz-appearance: textfield; font-family: inherit; }
     .group-ex-targets input::-webkit-inner-spin-button, .group-ex-targets input::-webkit-outer-spin-button { -webkit-appearance: none; }
     .group-ex-targets input:focus { border-color: var(--accent); }
-    .group-ex-targets label { font-size: .65rem; color: var(--muted); text-align: center; white-space: nowrap; }
+    .group-ex-targets label { font-size: .62rem; color: var(--muted); text-align: center; white-space: nowrap; font-weight: 600; }
     .group-ex-targets-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; flex: 1; }
-    .order-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .8rem; touch-action: manipulation; flex-shrink: 0; padding: 0; }
-    .order-btn:active { background: var(--bg); }
+    .order-btn { background: none; border: 1.5px solid var(--border); color: var(--muted); border-radius: 7px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .8rem; touch-action: manipulation; flex-shrink: 0; padding: 0; font-family: inherit; }
+    .order-btn:active { background: var(--card); }
     .order-btn:disabled { opacity: .25; pointer-events: none; }
+
+    .preset { background: var(--card2); border: 1.5px solid var(--border); color: var(--muted); border-radius: 10px; padding: 6px 13px; font-size: .78rem; cursor: pointer; touch-action: manipulation; font-family: inherit; font-weight: 700; }
+    .preset.active { background: var(--accent); border-color: var(--accent); color: #fff; }
   </style>
 </head>
 <body>
@@ -175,21 +181,29 @@
   <!-- TODAY -->
   <div id="view-today" class="view active">
     <div class="page-header">
-      <div class="page-title grad" id="todayTitle">Today</div>
+      <div class="page-title" id="todayTitle">Today</div>
       <button class="btn btn-ghost btn-sm" onclick="openGroupPicker('today')">Change</button>
     </div>
-    <div class="card" id="timerSection">
-      <div class="timer-label">Rest Timer</div>
-      <div class="timer-display" id="timerDisplay">1:30</div>
-      <div class="timer-row">
-        <button class="btn btn-green" id="startStopBtn" onclick="toggleTimer()">Start</button>
-        <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+    <div class="timer-card" id="timerSection">
+      <div class="timer-idle" id="timerIdle">
+        <div class="timer-idle-label">Session Time</div>
+        <div class="timer-idle-time" id="elapsedDisplay">—</div>
       </div>
-      <div class="presets">
-        <button class="preset" onclick="setPreset(60)">1 min</button>
-        <button class="preset active" onclick="setPreset(90)">1:30</button>
-        <button class="preset" onclick="setPreset(120)">2 min</button>
-        <button class="preset" onclick="setPreset(180)">3 min</button>
+      <div class="timer-rest" id="timerRest">
+        <div class="arc-wrap">
+          <svg viewBox="0 0 116 116">
+            <circle class="arc-bg" cx="58" cy="58" r="50"/>
+            <circle class="arc-fg" id="timerArc" cx="58" cy="58" r="50"/>
+          </svg>
+          <div class="arc-text">
+            <div class="timer-count" id="timerDisplay">1:30</div>
+          </div>
+        </div>
+        <div class="timer-controls">
+          <button class="t-adj" onclick="adjustTimer(-15)">−15s</button>
+          <button class="t-skip" onclick="skipTimer()">Skip Rest</button>
+          <button class="t-adj" onclick="adjustTimer(15)">+15s</button>
+        </div>
       </div>
     </div>
     <div id="todayContent"></div>
@@ -210,6 +224,10 @@
   <!-- LIBRARY -->
   <div id="view-library" class="view">
     <div class="page-header"><div class="page-title">Library</div></div>
+    <div class="lib-tabs">
+      <button class="lib-tab active" id="lib-tab-workouts" onclick="switchLibTab('workouts')">Workouts</button>
+      <button class="lib-tab" id="lib-tab-exercises" onclick="switchLibTab('exercises')">Exercises</button>
+    </div>
     <div id="libraryContent"></div>
   </div>
 
@@ -246,7 +264,7 @@
       <div class="modal-title" id="groupEditorTitle">Edit Group</div>
       <input class="modal-input" id="groupEditorName" placeholder="Group name" />
       <div id="groupEditorExList"></div>
-      <button class="btn btn-secondary btn-full" style="margin-bottom:8px" onclick="openExPicker()">+ Add Exercise</button>
+      <button class="btn btn-secondary btn-full" style="margin-bottom:8px" id="addExBtn">+ Add Exercise</button>
       <button class="btn btn-primary btn-full" style="margin-bottom:8px" onclick="saveGroup()">Save</button>
       <button class="btn btn-ghost btn-full" onclick="closeModal('groupEditorOverlay')">Cancel</button>
     </div>
@@ -279,6 +297,8 @@
 <script>
 const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const CATS = ['Barbell','Dumbbell','Machine','Bar','Bag','Other'];
+const ARC_R = 50;
+const ARC_LEN = 2 * Math.PI * ARC_R; // ~314.16
 
 const DEFAULT_EXERCISES = [
   {id:'e1',name:'Back Squat',cat:'Barbell'},
@@ -312,80 +332,72 @@ const DEFAULT_EXERCISES = [
   {id:'e29',name:'Pad Work',cat:'Bag'},
 ];
 
-// Groups: exercises = [{exId, targetSets, targetReps, targetWeight}]
-// Research-backed pairings per core lift:
-// Bench Day   — horizontal push + counterbalance horizontal pull + tricep/chest isolation
-// Back Squat  — quad/posterior chain volume + hamstring isolation
-// Chin Up Day — vertical pull + horizontal pull + bicep + rear delt
-// Deadlift    — posterior chain + upper back + press for balance
-// Front Squat — quad dominant / Olympic accessory + unilateral leg work
-// TKD Day     — bag work (reps = rounds)
 const DEFAULT_GROUPS = [
   {
     id:'g-bench', name:'Bench Day',
     exercises:[
-      {exId:'e4',  targetSets:5, targetReps:5,  targetWeight:70},  // Bench Press — primary 5×5 strength
-      {exId:'e10', targetSets:3, targetReps:10, targetWeight:22},  // Dumbbell Row — counterbalance horizontal pull
-      {exId:'e15', targetSets:3, targetReps:12, targetWeight:12},  // Dumbbell Fly — chest isolation
-      {exId:'e22', targetSets:3, targetReps:12, targetWeight:20},  // Cable Tricep Pushdown — tricep assistance
-      {exId:'e11', targetSets:3, targetReps:12, targetWeight:12},  // Dumbbell Curl — elbow flexion balance
-      {exId:'e9',  targetSets:3, targetReps:10, targetWeight:20},  // Dumbbell Press — secondary push / incline variation
+      {exId:'e4',  targetSets:5, targetReps:5,  targetWeight:70},
+      {exId:'e10', targetSets:3, targetReps:10, targetWeight:22},
+      {exId:'e15', targetSets:3, targetReps:12, targetWeight:12},
+      {exId:'e22', targetSets:3, targetReps:12, targetWeight:20},
+      {exId:'e11', targetSets:3, targetReps:12, targetWeight:12},
+      {exId:'e9',  targetSets:3, targetReps:10, targetWeight:20},
     ]
   },
   {
     id:'g-squat', name:'Back Squat Day',
     exercises:[
-      {exId:'e1',  targetSets:5, targetReps:5,  targetWeight:60},  // Back Squat — primary 5×5
-      {exId:'e7',  targetSets:3, targetReps:8,  targetWeight:50},  // Romanian Deadlift — posterior chain / hamstrings
-      {exId:'e16', targetSets:3, targetReps:10, targetWeight:80},  // Leg Press — quad volume
-      {exId:'e20', targetSets:3, targetReps:12, targetWeight:30},  // Leg Curl — hamstring isolation
-      {exId:'e13', targetSets:3, targetReps:12, targetWeight:20},  // Goblet Squat — mobility & form reinforcement
+      {exId:'e1',  targetSets:5, targetReps:5,  targetWeight:60},
+      {exId:'e7',  targetSets:3, targetReps:8,  targetWeight:50},
+      {exId:'e16', targetSets:3, targetReps:10, targetWeight:80},
+      {exId:'e20', targetSets:3, targetReps:12, targetWeight:30},
+      {exId:'e13', targetSets:3, targetReps:12, targetWeight:20},
     ]
   },
   {
     id:'g-chinup', name:'Chin Up Day',
     exercises:[
-      {exId:'e24', targetSets:4, targetReps:8,  targetWeight:null},// Chin Ups — primary vertical pull (bodyweight)
-      {exId:'e17', targetSets:3, targetReps:10, targetWeight:40},  // Lat Pulldown — lat volume assistance
-      {exId:'e6',  targetSets:3, targetReps:8,  targetWeight:50},  // Barbell Row — overall back thickness
-      {exId:'e18', targetSets:3, targetReps:12, targetWeight:40},  // Cable Row — mid-back / rhomboids
-      {exId:'e11', targetSets:3, targetReps:12, targetWeight:12},  // Dumbbell Curl — bicep isolation
-      {exId:'e12', targetSets:3, targetReps:12, targetWeight:8},   // Lateral Raise — rear/side delt balance
+      {exId:'e24', targetSets:4, targetReps:8,  targetWeight:null},
+      {exId:'e17', targetSets:3, targetReps:10, targetWeight:40},
+      {exId:'e6',  targetSets:3, targetReps:8,  targetWeight:50},
+      {exId:'e18', targetSets:3, targetReps:12, targetWeight:40},
+      {exId:'e11', targetSets:3, targetReps:12, targetWeight:12},
+      {exId:'e12', targetSets:3, targetReps:12, targetWeight:8},
     ]
   },
   {
     id:'g-deadlift', name:'Deadlift Day',
     exercises:[
-      {exId:'e3',  targetSets:3, targetReps:5,  targetWeight:80},  // Deadlift — primary 3×5 strength
-      {exId:'e7',  targetSets:3, targetReps:8,  targetWeight:50},  // Romanian Deadlift — hamstring accessory
-      {exId:'e6',  targetSets:3, targetReps:8,  targetWeight:50},  // Barbell Row — upper back carries over to pull
-      {exId:'e18', targetSets:3, targetReps:12, targetWeight:40},  // Cable Row — mid-back endurance
-      {exId:'e5',  targetSets:3, targetReps:8,  targetWeight:40},  // Overhead Press — shoulder / pressing balance
+      {exId:'e3',  targetSets:3, targetReps:5,  targetWeight:80},
+      {exId:'e7',  targetSets:3, targetReps:8,  targetWeight:50},
+      {exId:'e6',  targetSets:3, targetReps:8,  targetWeight:50},
+      {exId:'e18', targetSets:3, targetReps:12, targetWeight:40},
+      {exId:'e5',  targetSets:3, targetReps:8,  targetWeight:40},
     ]
   },
   {
     id:'g-frontsquat', name:'Front Squat Day',
     exercises:[
-      {exId:'e2',  targetSets:4, targetReps:4,  targetWeight:50},  // Front Squat — primary 4×4 technical work
-      {exId:'e21', targetSets:3, targetReps:12, targetWeight:30},  // Leg Extension — quad isolation
-      {exId:'e16', targetSets:3, targetReps:10, targetWeight:80},  // Leg Press — quad volume
-      {exId:'e14', targetSets:3, targetReps:10, targetWeight:16},  // Dumbbell Lunge — unilateral leg strength
-      {exId:'e26', targetSets:3, targetReps:10, targetWeight:null},// Dips — tricep / pressing assistance
+      {exId:'e2',  targetSets:4, targetReps:4,  targetWeight:50},
+      {exId:'e21', targetSets:3, targetReps:12, targetWeight:30},
+      {exId:'e16', targetSets:3, targetReps:10, targetWeight:80},
+      {exId:'e14', targetSets:3, targetReps:10, targetWeight:16},
+      {exId:'e26', targetSets:3, targetReps:10, targetWeight:null},
     ]
   },
   {
     id:'g-tkd', name:'Taekwondo Day',
     exercises:[
-      {exId:'e27', targetSets:5, targetReps:3, targetWeight:null}, // TKD Kick Session — 5 sets × 3 min rounds
-      {exId:'e28', targetSets:3, targetReps:3, targetWeight:null}, // Heavy Bag Rounds — 3 × 3 min
-      {exId:'e29', targetSets:3, targetReps:3, targetWeight:null}, // Pad Work — 3 × 3 min
+      {exId:'e27', targetSets:5, targetReps:3, targetWeight:null},
+      {exId:'e28', targetSets:3, targetReps:3, targetWeight:null},
+      {exId:'e29', targetSets:3, targetReps:3, targetWeight:null},
     ]
   },
 ];
 
 const DEFAULT_SCHEDULE = {0:null,1:'g-bench',2:'g-squat',3:null,4:'g-deadlift',5:'g-tkd',6:null};
 
-// ── DB ─────────────────────────────────────────────────────────────────────
+// ── DB ────────────────────────────────────────────────────────────────────────
 let db;
 function loadDB() {
   try { db = JSON.parse(localStorage.getItem('wapp_v3') || 'null'); } catch(e) { db = null; }
@@ -393,7 +405,6 @@ function loadDB() {
     db = { exercises: clone(DEFAULT_EXERCISES), groups: clone(DEFAULT_GROUPS), schedule: {...DEFAULT_SCHEDULE}, sessions: [] };
     saveDB(); return;
   }
-  // Migrate old exerciseIds format to exercises array
   db.groups = (db.groups||[]).map(g => {
     if (g.exerciseIds && !g.exercises) {
       return {...g, exercises: g.exerciseIds.map(exId => ({exId, targetSets:3, targetReps:10, targetWeight:null})), exerciseIds:undefined};
@@ -411,17 +422,22 @@ function todayDow() { return new Date().getDay(); }
 function getEx(id) { return db.exercises.find(e => e.id === id); }
 function getGroup(id) { return db.groups.find(g => g.id === id); }
 function fmtDate(s) { return new Date(s+'T12:00:00').toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'}); }
+function fmtT(s) { return `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`; }
+function fmtElapsed(ms) {
+  const s = Math.floor(ms/1000), m = Math.floor(s/60), h = Math.floor(m/60);
+  if (h > 0) return `${h}:${(m%60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;
+  return `${m}:${(s%60).toString().padStart(2,'0')}`;
+}
 
-// ── Sessions ───────────────────────────────────────────────────────────────
+// ── Sessions ──────────────────────────────────────────────────────────────────
 function getActiveSession() { return db.sessions.find(s => s.date===todayStr() && !s.finished); }
-
 function startSession(groupId) {
-  const s = {id:uid(), date:todayStr(), groupId, sets:{}, finished:false};
+  const s = {id:uid(), date:todayStr(), groupId, sets:{}, startTs:Date.now(), finished:false};
   db.sessions.push(s); saveDB(); return s;
 }
 function finishSession() {
   const s = getActiveSession(); if (!s) return;
-  s.finished = true; saveDB(); renderToday();
+  s.finished = true; saveDB(); stopElapsedTimer(); renderToday();
 }
 function logSetToSession(exId, w, r) {
   const s = getActiveSession(); if (!s) return;
@@ -430,53 +446,93 @@ function logSetToSession(exId, w, r) {
 }
 function delSetFromSession(exId, idx) {
   const s = getActiveSession(); if (!s) return;
-  s.sets[exId].splice(idx,1); saveDB(); renderToday();
+  s.sets[exId].splice(idx,1); saveDB();
 }
 function getPrevBest(exId) {
   const today = todayStr();
   return [...db.sessions].reverse().find(s => s.finished && s.date!==today && s.sets[exId]?.length>0) || null;
 }
 
-// ── Timer ──────────────────────────────────────────────────────────────────
+// ── Timer ─────────────────────────────────────────────────────────────────────
 let timerDur=90, timerRem=90, timerIv=null, timerOn=false;
-function fmtT(s) { return `${Math.floor(s/60)}:${(s%60).toString().padStart(2,'0')}`; }
+let elapsedIv=null;
+
 function updateTimerUI() {
-  const d=document.getElementById('timerDisplay'), b=document.getElementById('startStopBtn');
+  const d = document.getElementById('timerDisplay');
+  const arc = document.getElementById('timerArc');
+  const idle = document.getElementById('timerIdle');
+  const rest = document.getElementById('timerRest');
   if (!d) return;
   d.textContent = fmtT(timerRem);
-  d.className = 'timer-display'+(timerOn&&timerRem>10?' running':timerOn?' warning':'');
-  if (b) { b.textContent=timerOn?'Stop':'Start'; b.className=timerOn?'btn btn-red':'btn btn-green'; }
+  d.className = 'timer-count' + (timerOn && timerRem <= 10 ? ' warning' : '');
+  if (arc) {
+    const p = timerDur > 0 ? timerRem / timerDur : 0;
+    arc.style.strokeDasharray = ARC_LEN;
+    arc.style.strokeDashoffset = ARC_LEN * (1 - p);
+  }
+  const showRest = timerOn || timerRem < timerDur;
+  idle?.classList.toggle('hidden', showRest);
+  rest?.classList.toggle('active', showRest);
 }
+
+function startElapsedTimer() {
+  if (elapsedIv) clearInterval(elapsedIv);
+  updateElapsed();
+  elapsedIv = setInterval(updateElapsed, 1000);
+}
+function stopElapsedTimer() {
+  if (elapsedIv) { clearInterval(elapsedIv); elapsedIv = null; }
+}
+function updateElapsed() {
+  const s = getActiveSession();
+  const el = document.getElementById('elapsedDisplay');
+  if (!el) return;
+  el.textContent = (s && s.startTs) ? fmtElapsed(Date.now() - s.startTs) : '—';
+}
+
 function toggleTimer() {
-  if (timerOn) { clearInterval(timerIv); timerOn=false; }
+  if (timerOn) { clearInterval(timerIv); timerOn = false; }
   else {
-    if (timerRem===0) timerRem=timerDur;
-    timerOn=true;
-    timerIv=setInterval(()=>{ timerRem--; updateTimerUI(); if(timerRem<=0){clearInterval(timerIv);timerOn=false;timerRem=0;if('vibrate'in navigator)navigator.vibrate([200,100,200]);updateTimerUI();} },1000);
+    if (timerRem === 0) timerRem = timerDur;
+    timerOn = true;
+    timerIv = setInterval(() => {
+      timerRem--;
+      updateTimerUI();
+      if (timerRem <= 0) {
+        clearInterval(timerIv); timerOn = false; timerRem = 0;
+        if ('vibrate' in navigator) navigator.vibrate([200,100,200]);
+        updateTimerUI();
+        setTimeout(() => { timerRem = timerDur; updateTimerUI(); }, 1500);
+      }
+    }, 1000);
   }
   updateTimerUI();
 }
-function resetTimer() { clearInterval(timerIv); timerOn=false; timerRem=timerDur; updateTimerUI(); }
-function setPreset(s) {
-  resetTimer(); timerDur=s; timerRem=s;
-  document.querySelectorAll('.preset').forEach(b => b.classList.toggle('active',+b.getAttribute('onclick').match(/\d+/)[0]===s));
+function adjustTimer(delta) {
+  timerRem = Math.max(5, timerRem + delta);
+  if (timerRem > timerDur) timerDur = timerRem;
+  updateTimerUI();
+}
+function skipTimer() {
+  clearInterval(timerIv); timerOn = false; timerRem = timerDur;
   updateTimerUI();
 }
 function startRest() {
-  clearInterval(timerIv); timerOn=false; timerRem=timerDur; updateTimerUI(); toggleTimer();
+  clearInterval(timerIv); timerOn = false; timerRem = timerDur;
+  toggleTimer();
   document.getElementById('timerSection')?.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-// ── Navigation ─────────────────────────────────────────────────────────────
+// ── Navigation ────────────────────────────────────────────────────────────────
 function showView(name) {
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.getElementById('tab-'+name).classList.add('active');
-  ({today:renderToday,week:renderWeek,history:renderHistory,library:renderLibrary})[name]?.();
+  ({today:renderToday, week:renderWeek, history:renderHistory, library:renderLibrary})[name]?.();
 }
 
-// ── TODAY ──────────────────────────────────────────────────────────────────
+// ── TODAY ─────────────────────────────────────────────────────────────────────
 function renderToday() {
   const dow = todayDow();
   const scheduledId = db.schedule[dow];
@@ -487,13 +543,16 @@ function renderToday() {
   let group = session ? getGroup(session.groupId) : (scheduledId ? getGroup(scheduledId) : null);
   titleEl.textContent = group ? group.name : DAYS[dow];
 
+  if (session) startElapsedTimer(); else stopElapsedTimer();
+  updateTimerUI();
+
   if (!session && !group) {
-    el.innerHTML=`<div class="empty-state"><h2>No workout today</h2><p>Assign a workout to this day in the Week tab, or pick one now.</p><button class="btn btn-primary" onclick="openGroupPicker('start')">Pick Workout</button></div>`;
+    el.innerHTML = `<div class="empty-state"><h2>No workout today</h2><p>Assign a workout to this day in the Week tab, or pick one now.</p><button class="btn btn-primary" onclick="openGroupPicker('start')">Pick Workout</button></div>`;
     return;
   }
   if (!session) {
-    const exs = group.exercises||[];
-    el.innerHTML=`<div class="empty-state"><h2>${group.name}</h2><p>${exs.length} exercises planned</p><button class="btn btn-primary" onclick="beginSession('${group.id}')">Start Session</button></div>`;
+    const exs = group.exercises || [];
+    el.innerHTML = `<div class="empty-state"><h2>${group.name}</h2><p>${exs.length} exercises planned</p><button class="btn btn-primary" onclick="beginSession('${group.id}')">Start Session</button></div>`;
     return;
   }
 
@@ -509,14 +568,12 @@ function renderToday() {
     const done = sets.length;
     const onTarget = tgt && done >= tgt;
 
-    // Target badge
     let tgtStr = '';
     if (cfg.targetSets) {
       tgtStr = `${cfg.targetSets} × ${cfg.targetReps}`;
       if (cfg.targetWeight) tgtStr += ` @ ${cfg.targetWeight}kg`;
     }
 
-    // Previous best
     const prev = getPrevBest(cfg.exId);
     let prevHtml = '';
     if (prev) {
@@ -524,7 +581,15 @@ function renderToday() {
       prevHtml = `<div class="prev-best">Last (${fmtDate(prev.date)}): <strong>${prevSets.map(s=>(s.w?s.w+'kg×':'')+s.r+'r').join(' · ')}</strong></div>`;
     }
 
-    const setsHtml = sets.map((s,i)=>`<div class="set-tag">${s.w?s.w+'kg × ':''}${s.r}r<span class="set-del" onclick="delSet('${cfg.exId}',${i})">×</span></div>`).join('');
+    // Toggle buttons: show targetSets slots, plus one extra if all done (to log bonus sets)
+    const slots = tgt ? tgt : done + 1;
+    const extraSlot = done >= slots ? 1 : 0;
+    const totalSlots = slots + extraSlot;
+    let togglesHtml = '';
+    for (let i = 0; i < totalSlots; i++) {
+      const isDone = i < done;
+      togglesHtml += `<button class="set-toggle${isDone?' done':''}" onclick="toggleSet('${cfg.exId}',${i})">${i+1}</button>`;
+    }
 
     html += `<div class="ex-card${done?' has-sets':''}" id="exc-${cfg.exId}">
       <div class="ex-card-header">
@@ -533,57 +598,86 @@ function renderToday() {
           <div class="ex-cat">${ex.cat}</div>
         </div>
         <div class="ex-card-right">
-          <div class="set-progress${onTarget?' on-target':''}">${tgt ? done+'/'+tgt+' sets' : done+' sets'}</div>
+          <div class="set-progress${onTarget?' on-target':''}">${tgt ? done+'/'+tgt : done} sets</div>
         </div>
       </div>
-      ${tgtStr?`<div class="target-badge">Target: ${tgtStr}</div>`:''}
+      ${tgtStr ? `<div class="target-badge">Target: ${tgtStr}</div>` : ''}
       ${prevHtml}
-      <div class="sets-list" id="sets-${cfg.exId}">${setsHtml}</div>
+      <div class="set-toggles">${togglesHtml}</div>
       <div class="log-row">
         <input type="number" id="w-${cfg.exId}" placeholder="${cfg.targetWeight||'kg'}" min="0" step="2.5" value="${cfg.targetWeight||''}"/>
         <span class="log-sep">×</span>
         <input type="number" id="r-${cfg.exId}" placeholder="${cfg.targetReps||'reps'}" min="1" step="1" value="${cfg.targetReps||''}"/>
-        <button class="btn btn-primary btn-sm" onclick="logSet('${cfg.exId}')">+Set</button>
       </div>
-      <button class="rest-btn" onclick="startRest()">⏱ Rest</button>
+      <button class="rest-trigger" onclick="startRest()">⏱ Rest Timer</button>
     </div>`;
   });
 
   el.innerHTML = html;
-  updateTimerUI();
 }
 
 function beginSession(groupId) { startSession(groupId); renderToday(); }
 
-function logSet(exId) {
-  const rEl=document.getElementById('r-'+exId), wEl=document.getElementById('w-'+exId);
-  const r=parseInt(rEl.value); if(!r||r<1){rEl.focus();return;}
-  const w=parseFloat(wEl.value)||null;
-  logSetToSession(exId,w,r);
-  const s=getActiveSession().sets[exId];
-  // Get config for progress display
-  const session=getActiveSession();
-  const group=getGroup(session?.groupId);
-  const cfg=group?.exercises?.find(c=>c.exId===exId);
-  const tgt=cfg?.targetSets;
-  const done=s.length;
-  const card=document.getElementById('exc-'+exId);
-  if(card){
-    card.classList.toggle('has-sets',done>0);
-    const prog=card.querySelector('.set-progress');
-    if(prog){prog.textContent=tgt?done+'/'+tgt+' sets':done+' sets';prog.classList.toggle('on-target',tgt&&done>=tgt);}
-    const sl=document.getElementById('sets-'+exId);
-    if(sl) sl.innerHTML=s.map((st,i)=>`<div class="set-tag">${st.w?st.w+'kg × ':''}${st.r}r<span class="set-del" onclick="delSet('${exId}',${i})">×</span></div>`).join('');
-  }
-  rEl.value=''; rEl.focus();
-}
-function delSet(exId,idx){delSetFromSession(exId,idx);}
+function toggleSet(exId, setIndex) {
+  const s = getActiveSession(); if (!s) return;
+  if (!s.sets[exId]) s.sets[exId] = [];
+  const sets = s.sets[exId];
+  const lastIdx = sets.length - 1;
 
-// ── WEEK ───────────────────────────────────────────────────────────────────
+  if (setIndex < sets.length) {
+    if (setIndex === lastIdx) {
+      delSetFromSession(exId, lastIdx);
+      refreshCard(exId);
+    }
+    return;
+  }
+  if (setIndex === sets.length) {
+    const group = getGroup(s.groupId);
+    const cfg = group?.exercises?.find(c => c.exId === exId);
+    const wEl = document.getElementById('w-'+exId);
+    const rEl = document.getElementById('r-'+exId);
+    const w = parseFloat(wEl?.value) || null;
+    const r = parseInt(rEl?.value) || cfg?.targetReps || 1;
+    logSetToSession(exId, w, r);
+    refreshCard(exId);
+    startRest();
+  }
+}
+
+function refreshCard(exId) {
+  const s = getActiveSession();
+  const sets = s?.sets[exId] || [];
+  const done = sets.length;
+  const card = document.getElementById('exc-'+exId);
+  if (!card) return;
+
+  const group = getGroup(s?.groupId);
+  const cfg = group?.exercises?.find(c => c.exId === exId);
+  const tgt = cfg?.targetSets;
+  const onTarget = tgt && done >= tgt;
+
+  card.classList.toggle('has-sets', done > 0);
+  const prog = card.querySelector('.set-progress');
+  if (prog) { prog.textContent = `${tgt ? done+'/'+tgt : done} sets`; prog.classList.toggle('on-target', onTarget); }
+
+  const slots = tgt ? tgt : done + 1;
+  const extraSlot = done >= slots ? 1 : 0;
+  const totalSlots = slots + extraSlot;
+  const togglesWrap = card.querySelector('.set-toggles');
+  if (togglesWrap) {
+    let html = '';
+    for (let i = 0; i < totalSlots; i++) {
+      html += `<button class="set-toggle${i < done?' done':''}" onclick="toggleSet('${exId}',${i})">${i+1}</button>`;
+    }
+    togglesWrap.innerHTML = html;
+  }
+}
+
+// ── WEEK ──────────────────────────────────────────────────────────────────────
 function renderWeek() {
-  const dow=todayDow();
-  document.getElementById('weekContent').innerHTML=DAYS.map((day,i)=>{
-    const g=db.schedule[i]?getGroup(db.schedule[i]):null;
+  const dow = todayDow();
+  document.getElementById('weekContent').innerHTML = DAYS.map((day,i) => {
+    const g = db.schedule[i] ? getGroup(db.schedule[i]) : null;
     return `<div class="day-row${i===dow?' today':''}" onclick="openGroupPicker('week-${i}')">
       <div class="day-name-wrap"><div class="day-name">${day}</div>${i===dow?'<div class="today-badge">Today</div>':''}</div>
       <div class="day-workout${g?'':' rest'}">${g?g.name:'Rest'}</div>
@@ -592,94 +686,119 @@ function renderWeek() {
   }).join('');
 }
 
-// ── HISTORY ────────────────────────────────────────────────────────────────
+// ── HISTORY ───────────────────────────────────────────────────────────────────
 function renderHistory() {
-  const sessions=[...db.sessions].reverse();
-  if(!sessions.length){
-    document.getElementById('historyContent').innerHTML=`<div class="empty-state"><h2>No history yet</h2><p>Finish a session to see it here</p></div>`;
+  const sessions = [...db.sessions].reverse();
+  if (!sessions.length) {
+    document.getElementById('historyContent').innerHTML = `<div class="empty-state"><h2>No history yet</h2><p>Finish a session to see it here</p></div>`;
     return;
   }
-  document.getElementById('historyContent').innerHTML=sessions.map(s=>{
-    const g=getGroup(s.groupId);
-    const totalSets=Object.values(s.sets).reduce((a,b)=>a+b.length,0);
-    const vol=Object.values(s.sets).flat().reduce((a,b)=>a+(b.w||0)*b.r,0);
-    const exRows=Object.entries(s.sets).filter(([,sets])=>sets.length).map(([exId,sets])=>{
-      const ex=getEx(exId);
+  document.getElementById('historyContent').innerHTML = sessions.map(s => {
+    const g = getGroup(s.groupId);
+    const totalSets = Object.values(s.sets).reduce((a,b) => a+b.length, 0);
+    const vol = Object.values(s.sets).flat().reduce((a,b) => a+(b.w||0)*b.r, 0);
+    const dur = (s.startTs && s.finished) ? fmtElapsed(s.finished===true ? 0 : 0) : '';
+    const exRows = Object.entries(s.sets).filter(([,sets]) => sets.length).map(([exId,sets]) => {
+      const ex = getEx(exId);
       return `<div class="session-ex"><div class="session-ex-name">${ex?ex.name:exId}</div><div class="session-sets">${sets.map(st=>(st.w?st.w+'kg×':'')+st.r+'r').join(' · ')}</div></div>`;
     }).join('');
     return `<div class="session-card" onclick="this.querySelector('.session-body').classList.toggle('open')">
       <div class="session-header">
-        <div class="session-info"><div class="session-date">${fmtDate(s.date)}${!s.finished?' <span style="color:var(--green);font-size:.7rem">●</span>':''}</div><div class="session-group">${g?g.name:'Custom'}</div></div>
-        <div class="session-meta">${totalSets} sets${vol?'<br>'+vol+'kg vol':''}</div>
+        <div class="session-info">
+          <div class="session-date">${fmtDate(s.date)}${!s.finished?' <span style="color:var(--green);font-size:.7rem">●</span>':''}</div>
+          <div class="session-group">${g?g.name:'Custom'}</div>
+        </div>
+        <div class="session-meta">${totalSets} sets${vol?'<br>'+vol+'kg':''}</div>
       </div>
       <div class="session-body">${exRows||'<span style="color:var(--muted);font-size:.8rem">No sets logged</span>'}</div>
     </div>`;
   }).join('');
 }
 
-// ── LIBRARY ────────────────────────────────────────────────────────────────
+// ── LIBRARY ───────────────────────────────────────────────────────────────────
+let libTab = 'workouts';
+function switchLibTab(tab) {
+  libTab = tab;
+  document.getElementById('lib-tab-workouts').classList.toggle('active', tab==='workouts');
+  document.getElementById('lib-tab-exercises').classList.toggle('active', tab==='exercises');
+  renderLibraryContent();
+}
+
 function renderLibrary() {
-  let html=`<div class="section-title">Workout Groups</div>`;
-  db.groups.forEach(g=>{
-    html+=`<div class="list-item">
-      <div class="list-item-text"><div class="list-item-name">${g.name}</div><div class="list-item-sub">${(g.exercises||[]).length} exercises</div></div>
-      <div class="list-item-actions">
-        <button class="icon-btn" onclick="openGroupEditor('${g.id}')">✏️</button>
-        <button class="icon-btn" onclick="deleteGroup('${g.id}')">🗑</button>
-      </div>
-    </div>`;
-  });
-  html+=`<button class="btn btn-secondary btn-full" style="margin-bottom:20px" onclick="openGroupEditor(null)">+ New Workout Group</button><div class="section-title">Exercise Library</div>`;
-  CATS.forEach(cat=>{
-    const exs=db.exercises.filter(e=>e.cat===cat);
-    if(!exs.length)return;
-    html+=`<div class="cat-group-label">${cat}</div>`;
-    exs.forEach(ex=>{
-      html+=`<div class="list-item" style="padding:9px 14px">
-        <div class="list-item-text" style="font-size:.85rem;font-weight:600">${ex.name}</div>
-        <button class="icon-btn" onclick="deleteExercise('${ex.id}')">×</button>
+  libTab = libTab || 'workouts';
+  document.getElementById('lib-tab-workouts').classList.toggle('active', libTab==='workouts');
+  document.getElementById('lib-tab-exercises').classList.toggle('active', libTab==='exercises');
+  renderLibraryContent();
+}
+
+function renderLibraryContent() {
+  const el = document.getElementById('libraryContent');
+  if (libTab === 'workouts') {
+    let html = '';
+    db.groups.forEach(g => {
+      html += `<div class="list-item">
+        <div class="list-item-text"><div class="list-item-name">${g.name}</div><div class="list-item-sub">${(g.exercises||[]).length} exercises</div></div>
+        <div class="list-item-actions">
+          <button class="icon-btn" onclick="openGroupEditor('${g.id}')">✏️</button>
+          <button class="icon-btn" onclick="deleteGroup('${g.id}')">🗑</button>
+        </div>
       </div>`;
     });
-  });
-  html+=`<button class="btn btn-secondary btn-full" style="margin-top:8px">+ Add Exercise</button>`;
-  document.getElementById('libraryContent').innerHTML=html;
-  // re-attach click since onclick in innerHTML won't have closure
-  document.querySelector('#libraryContent .btn-secondary:last-child').onclick=openNewExModal;
+    html += `<button class="btn btn-secondary btn-full" style="margin-top:4px;margin-bottom:20px" id="newGroupBtn">+ New Workout Group</button>`;
+    el.innerHTML = html;
+    document.getElementById('newGroupBtn').onclick = () => openGroupEditor(null);
+  } else {
+    let html = '';
+    CATS.forEach(cat => {
+      const exs = db.exercises.filter(e => e.cat===cat);
+      if (!exs.length) return;
+      html += `<div class="cat-group-label">${cat}</div>`;
+      exs.forEach(ex => {
+        html += `<div class="list-item" style="padding:10px 15px">
+          <div class="list-item-text"><div class="list-item-name" style="font-size:.88rem">${ex.name}</div></div>
+          <button class="icon-btn" onclick="deleteExercise('${ex.id}')">×</button>
+        </div>`;
+      });
+    });
+    html += `<button class="btn btn-secondary btn-full" style="margin-top:8px;margin-bottom:20px" id="newExBtn">+ Add Exercise</button>`;
+    el.innerHTML = html;
+    document.getElementById('newExBtn').onclick = openNewExModal;
+  }
 }
 
 function deleteGroup(id) {
-  if(!confirm('Delete this workout group?'))return;
-  db.groups=db.groups.filter(g=>g.id!==id);
-  Object.keys(db.schedule).forEach(d=>{if(db.schedule[d]===id)db.schedule[d]=null;});
-  saveDB(); renderLibrary();
+  if (!confirm('Delete this workout group?')) return;
+  db.groups = db.groups.filter(g => g.id!==id);
+  Object.keys(db.schedule).forEach(d => { if(db.schedule[d]===id) db.schedule[d]=null; });
+  saveDB(); renderLibraryContent();
 }
 function deleteExercise(id) {
-  if(!confirm('Remove this exercise?'))return;
-  db.exercises=db.exercises.filter(e=>e.id!==id);
-  db.groups.forEach(g=>{g.exercises=(g.exercises||[]).filter(c=>c.exId!==id);});
-  saveDB(); renderLibrary();
+  if (!confirm('Remove this exercise?')) return;
+  db.exercises = db.exercises.filter(e => e.id!==id);
+  db.groups.forEach(g => { g.exercises = (g.exercises||[]).filter(c => c.exId!==id); });
+  saveDB(); renderLibraryContent();
 }
 
-// ── GROUP EDITOR ───────────────────────────────────────────────────────────
-let editingGroup=null;
-
+// ── GROUP EDITOR ──────────────────────────────────────────────────────────────
+let editingGroup = null;
 function openGroupEditor(groupId) {
-  if(groupId){
-    const g=getGroup(groupId);
-    editingGroup={id:g.id,name:g.name,exercises:clone(g.exercises||[])};
-    document.getElementById('groupEditorTitle').textContent='Edit Group';
+  if (groupId) {
+    const g = getGroup(groupId);
+    editingGroup = {id:g.id, name:g.name, exercises:clone(g.exercises||[])};
+    document.getElementById('groupEditorTitle').textContent = 'Edit Group';
   } else {
-    editingGroup={id:null,name:'',exercises:[]};
-    document.getElementById('groupEditorTitle').textContent='New Group';
+    editingGroup = {id:null, name:'', exercises:[]};
+    document.getElementById('groupEditorTitle').textContent = 'New Group';
   }
-  document.getElementById('groupEditorName').value=editingGroup.name;
+  document.getElementById('groupEditorName').value = editingGroup.name;
   renderGroupExList();
+  document.getElementById('addExBtn').onclick = openExPicker;
   document.getElementById('groupEditorOverlay').classList.add('open');
 }
 
 function renderGroupExList() {
-  document.getElementById('groupEditorExList').innerHTML=editingGroup.exercises.map((cfg,i)=>{
-    const ex=getEx(cfg.exId);
+  document.getElementById('groupEditorExList').innerHTML = editingGroup.exercises.map((cfg,i) => {
+    const ex = getEx(cfg.exId);
     return `<div class="group-ex-item">
       <div class="group-ex-top">
         <button class="order-btn" onclick="moveEx(${i},-1)" ${i===0?'disabled':''}>↑</button>
@@ -708,107 +827,112 @@ function renderGroupExList() {
   }).join('');
 }
 
-function updateExTarget(idx,key,val) {
-  editingGroup.exercises[idx][key]=val?parseFloat(val):null;
-}
+function updateExTarget(idx,key,val) { editingGroup.exercises[idx][key] = val ? parseFloat(val) : null; }
 function moveEx(i,dir) {
-  const a=editingGroup.exercises,j=i+dir;
-  if(j<0||j>=a.length)return;
-  [a[i],a[j]]=[a[j],a[i]]; renderGroupExList();
+  const a = editingGroup.exercises, j = i+dir;
+  if (j<0||j>=a.length) return;
+  [a[i],a[j]] = [a[j],a[i]]; renderGroupExList();
 }
 function removeExAt(i) { editingGroup.exercises.splice(i,1); renderGroupExList(); }
 function saveGroup() {
-  const name=document.getElementById('groupEditorName').value.trim();
-  if(!name){document.getElementById('groupEditorName').focus();return;}
-  if(editingGroup.id){
-    const g=getGroup(editingGroup.id); g.name=name; g.exercises=editingGroup.exercises;
+  const name = document.getElementById('groupEditorName').value.trim();
+  if (!name) { document.getElementById('groupEditorName').focus(); return; }
+  if (editingGroup.id) {
+    const g = getGroup(editingGroup.id); g.name=name; g.exercises=editingGroup.exercises;
   } else {
-    db.groups.push({id:uid(),name,exercises:editingGroup.exercises});
+    db.groups.push({id:uid(), name, exercises:editingGroup.exercises});
   }
-  saveDB(); closeModal('groupEditorOverlay'); renderLibrary();
+  saveDB(); closeModal('groupEditorOverlay'); renderLibraryContent();
 }
 
-// ── EX PICKER ─────────────────────────────────────────────────────────────
+// ── EX PICKER ─────────────────────────────────────────────────────────────────
 function openExPicker() {
-  document.getElementById('exSearch').value=''; renderExPicker();
+  document.getElementById('exSearch').value = ''; renderExPicker();
   document.getElementById('exPickerOverlay').classList.add('open');
 }
 function renderExPicker() {
-  const q=document.getElementById('exSearch').value.toLowerCase();
-  const taken=new Set(editingGroup.exercises.map(c=>c.exId));
-  const avail=db.exercises.filter(e=>!taken.has(e.id)&&e.name.toLowerCase().includes(q));
-  let html='';
-  CATS.forEach(cat=>{
-    const exs=avail.filter(e=>e.cat===cat);
-    if(!exs.length)return;
-    if(!q) html+=`<div class="cat-group-label">${cat}</div>`;
-    exs.forEach(ex=>{html+=`<div class="modal-option" onclick="addExToGroup('${ex.id}')"><span class="modal-option-name">${ex.name}</span><span style="color:var(--muted);font-size:.72rem">${ex.cat}</span></div>`;});
+  const q = document.getElementById('exSearch').value.toLowerCase();
+  const taken = new Set(editingGroup.exercises.map(c => c.exId));
+  const avail = db.exercises.filter(e => !taken.has(e.id) && e.name.toLowerCase().includes(q));
+  let html = '';
+  CATS.forEach(cat => {
+    const exs = avail.filter(e => e.cat===cat);
+    if (!exs.length) return;
+    if (!q) html += `<div class="cat-group-label">${cat}</div>`;
+    exs.forEach(ex => { html += `<div class="modal-option" onclick="addExToGroup('${ex.id}')"><span class="modal-option-name">${ex.name}</span><span style="color:var(--muted);font-size:.72rem">${ex.cat}</span></div>`; });
   });
-  document.getElementById('exPickerList').innerHTML=html||`<div style="color:var(--muted);padding:14px;text-align:center">No exercises found</div>`;
+  document.getElementById('exPickerList').innerHTML = html || `<div style="color:var(--muted);padding:14px;text-align:center">No exercises found</div>`;
 }
 function addExToGroup(exId) {
-  editingGroup.exercises.push({exId,targetSets:3,targetReps:10,targetWeight:null});
+  editingGroup.exercises.push({exId, targetSets:3, targetReps:10, targetWeight:null});
   closeModal('exPickerOverlay'); renderGroupExList();
 }
 
-// ── NEW EXERCISE ───────────────────────────────────────────────────────────
-let newExCat='Barbell';
+// ── NEW EXERCISE ──────────────────────────────────────────────────────────────
+let newExCat = 'Barbell';
 function openNewExModal() {
-  newExCat='Barbell';
-  document.getElementById('newExName').value='';
-  document.getElementById('catBtns').innerHTML=CATS.map(c=>`<button class="preset${c===newExCat?' active':''}" onclick="selectCat('${c}')">${c}</button>`).join('');
+  newExCat = 'Barbell';
+  document.getElementById('newExName').value = '';
+  document.getElementById('catBtns').innerHTML = CATS.map(c => `<button class="preset${c===newExCat?' active':''}" onclick="selectCat('${c}')">${c}</button>`).join('');
   document.getElementById('newExOverlay').classList.add('open');
 }
 function selectCat(cat) {
-  newExCat=cat;
-  document.querySelectorAll('#catBtns .preset').forEach(b=>b.classList.toggle('active',b.textContent===cat));
+  newExCat = cat;
+  document.querySelectorAll('#catBtns .preset').forEach(b => b.classList.toggle('active', b.textContent===cat));
 }
 function saveNewExercise() {
-  const name=document.getElementById('newExName').value.trim();
-  if(!name){document.getElementById('newExName').focus();return;}
-  db.exercises.push({id:uid(),name,cat:newExCat}); saveDB(); closeModal('newExOverlay'); renderLibrary();
+  const name = document.getElementById('newExName').value.trim();
+  if (!name) { document.getElementById('newExName').focus(); return; }
+  db.exercises.push({id:uid(), name, cat:newExCat}); saveDB(); closeModal('newExOverlay'); renderLibraryContent();
 }
 
-// ── GROUP PICKER ───────────────────────────────────────────────────────────
-let pickerCtx=null;
+// ── GROUP PICKER ──────────────────────────────────────────────────────────────
+let pickerCtx = null;
 function openGroupPicker(ctx) {
-  pickerCtx=ctx;
-  const isWeek=ctx.startsWith('week-');
-  const dow=isWeek?parseInt(ctx.split('-')[1]):null;
-  const currentId=dow!==null?db.schedule[dow]:null;
-  document.getElementById('groupPickerTitle').textContent=isWeek?`${DAYS[dow]} — Assign Workout`:'Choose Workout';
-  let html='';
-  if(isWeek) html+=`<div class="modal-option${!currentId?' selected':''}" onclick="assignGroup(null)"><span class="modal-option-name">Rest</span>${!currentId?'✓':''}</div>`;
-  db.groups.forEach(g=>{
-    html+=`<div class="modal-option${g.id===currentId?' selected':''}" onclick="assignGroup('${g.id}')"><span class="modal-option-name">${g.name}</span>${g.id===currentId?'✓':''}</div>`;
+  pickerCtx = ctx;
+  const isWeek = ctx.startsWith('week-');
+  const dow = isWeek ? parseInt(ctx.split('-')[1]) : null;
+  const currentId = dow!==null ? db.schedule[dow] : null;
+  document.getElementById('groupPickerTitle').textContent = isWeek ? `${DAYS[dow]} — Assign Workout` : 'Choose Workout';
+  let html = '';
+  if (isWeek) html += `<div class="modal-option${!currentId?' selected':''}" onclick="assignGroup(null)"><span class="modal-option-name">Rest</span>${!currentId?'✓':''}</div>`;
+  db.groups.forEach(g => {
+    html += `<div class="modal-option${g.id===currentId?' selected':''}" onclick="assignGroup('${g.id}')"><span class="modal-option-name">${g.name}</span>${g.id===currentId?'✓':''}</div>`;
   });
-  document.getElementById('groupPickerList').innerHTML=html;
+  document.getElementById('groupPickerList').innerHTML = html;
   document.getElementById('groupPickerOverlay').classList.add('open');
 }
 function assignGroup(groupId) {
-  const ctx=pickerCtx; closeModal('groupPickerOverlay');
-  if(ctx.startsWith('week-')){
-    db.schedule[parseInt(ctx.split('-')[1])]=groupId; saveDB(); renderWeek();
+  const ctx = pickerCtx; closeModal('groupPickerOverlay');
+  if (ctx.startsWith('week-')) {
+    db.schedule[parseInt(ctx.split('-')[1])] = groupId; saveDB(); renderWeek();
   } else {
-    if(!groupId)return;
-    const s=getActiveSession();
-    if(s){s.groupId=groupId;saveDB();}else{startSession(groupId);}
+    if (!groupId) return;
+    const s = getActiveSession();
+    if (s) { s.groupId=groupId; saveDB(); } else { startSession(groupId); }
     renderToday();
   }
 }
 
-// ── MODALS ─────────────────────────────────────────────────────────────────
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-function overlayClose(e,id){if(e.target===e.currentTarget)closeModal(id);}
+// ── MODALS ────────────────────────────────────────────────────────────────────
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function overlayClose(e,id) { if (e.target===e.currentTarget) closeModal(id); }
 
-// ── INIT ───────────────────────────────────────────────────────────────────
-loadDB(); updateTimerUI(); renderToday();
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadDB();
+updateTimerUI();
+renderToday();
 
-document.addEventListener('keydown',e=>{
-  if(e.key!=='Enter'||e.target.tagName!=='INPUT')return;
-  const id=e.target.id;
-  if(id.startsWith('r-'))logSet(id.slice(2));
-  else if(id.startsWith('w-'))document.getElementById('r-'+id.slice(2))?.focus();
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') return;
+  const id = e.target.id;
+  if (id.startsWith('r-')) {
+    const exId = id.slice(2);
+    const sets = getActiveSession()?.sets[exId] || [];
+    toggleSet(exId, sets.length);
+  } else if (id.startsWith('w-')) {
+    document.getElementById('r-'+id.slice(2))?.focus();
+  }
 });
 </script>
 </body>
