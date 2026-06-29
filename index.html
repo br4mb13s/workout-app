@@ -526,19 +526,22 @@ function loadDB() {
   try { db = JSON.parse(localStorage.getItem(dbKey()) || 'null'); } catch { db = null; }
   if (!db) {
     db = {exercises:clone(DEFAULT_EXERCISES), groups:clone(DEFAULT_GROUPS), schedule:{...DEFAULT_SCHEDULE}, sessions:[]};
-    saveDB(); return;
+    saveDB(true); return;
   }
+  let dirty = false;
   db.groups = (db.groups||[]).map(g => {
-    if (g.exerciseIds && !g.exercises)
+    if (g.exerciseIds && !g.exercises) {
+      dirty = true;
       return {...g, exercises:g.exerciseIds.map(exId=>({exId,targetSets:3,targetReps:10,targetWeight:null,restSeconds:90})), exerciseIds:undefined};
+    }
     return g;
   });
-  if (!db.schedule) db.schedule = {...DEFAULT_SCHEDULE};
-  saveDB();
+  if (!db.schedule) { db.schedule = {...DEFAULT_SCHEDULE}; dirty = true; }
+  if (dirty) saveDB(true);
 }
-function saveDB() {
+function saveDB(skipSync) {
   localStorage.setItem(dbKey(), JSON.stringify(db));
-  scheduleAutoSync();
+  if (!skipSync) scheduleAutoSync();
 }
 function clone(x) { return JSON.parse(JSON.stringify(x)); }
 function uid() { return '_' + Math.random().toString(36).slice(2,9); }
@@ -785,7 +788,8 @@ function toggleSet(exId,setIndex){
   if(setIndex===sets.length){
     const group=getGroup(s.groupId);
     const cfg=group?.exercises?.find(c=>c.exId===exId);
-    const w=parseFloat(document.getElementById('w-'+exId)?.value)||null;
+    const wRaw=document.getElementById('w-'+exId)?.value;
+    const w=(wRaw!==''&&wRaw!=null)?parseFloat(wRaw)||null:null;
     const r=parseInt(document.getElementById('r-'+exId)?.value)||cfg?.targetReps||1;
     logSetToSession(exId,w,r);
     refreshCard(exId);
@@ -922,8 +926,6 @@ function renderLibrary(){
 function renderLibraryContent(){
   const el=document.getElementById('libraryContent');
   if(libTab==='workouts'){
-    const cfg=getGistCfg();
-    const lastSync=cfg.lastSync?'Last synced '+new Date(cfg.lastSync).toLocaleTimeString():'Not synced yet';
     let html=db.groups.map(g=>`<div class="list-item">
       <div class="list-item-text"><div class="list-item-name">${g.name}</div><div class="list-item-sub">${(g.exercises||[]).length} exercises</div></div>
       <div class="list-item-actions">
@@ -1116,8 +1118,8 @@ async function pushNow(){
     if(!resp.ok){const e=await resp.json();throw new Error(e.message||resp.status);}
     const data=await resp.json();
     setGistCfg({...cfg,gistId:data.id,lastSync:Date.now()});
-    setSyncStatus('Pushed '+new Date().toLocaleTimeString(),'sync-ok');
     renderLibraryContent();
+    setSyncStatus('Pushed '+new Date().toLocaleTimeString(),'sync-ok');
   }catch(e){setSyncStatus('Push failed: '+e.message,'sync-err');}
 }
 
@@ -1136,7 +1138,7 @@ async function pullNow(){
       profiles.forEach(p=>{if(data.files[p.id+'.json'])localStorage.setItem('wapp_'+p.id,data.files[p.id+'.json'].content);});
     }
     setGistCfg({...cfg,lastSync:Date.now()});
-    loadDB(); updateProfileBtn(); renderLibraryContent();
+    loadDB(); updateProfileBtn(); renderLibraryContent(); renderToday();
     setSyncStatus('Pulled '+new Date().toLocaleTimeString(),'sync-ok');
   }catch(e){setSyncStatus('Pull failed: '+e.message,'sync-err');}
 }
