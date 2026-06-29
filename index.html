@@ -785,7 +785,7 @@ function toggleSet(exId,setIndex){
   if(!s.sets[exId]) s.sets[exId]=[];
   const sets=s.sets[exId];
   if(setIndex<sets.length){openEditSet(exId,setIndex);return;}
-  if(setIndex===sets.length){
+  if(setIndex>=sets.length){
     const group=getGroup(s.groupId);
     const cfg=group?.exercises?.find(c=>c.exId===exId);
     const wRaw=document.getElementById('w-'+exId)?.value;
