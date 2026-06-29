@@ -178,6 +178,12 @@
 
     .preset { background: var(--card2); border: 1.5px solid var(--border); color: var(--muted); border-radius: 10px; padding: 6px 13px; font-size: .78rem; cursor: pointer; touch-action: manipulation; font-family: inherit; font-weight: 700; }
     .preset.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .rest-pill { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 10px); left: 50%; transform: translateX(-50%); background: var(--accent); color: #fff; border-radius: 20px; padding: 7px 16px 7px 14px; font-size: .82rem; font-weight: 700; display: flex; align-items: center; gap: 10px; z-index: 150; box-shadow: 0 2px 14px rgba(0,0,0,.18); white-space: nowrap; }
+    .rest-pill.hidden { display: none; }
+    .rest-pill-time { font-variant-numeric: tabular-nums; letter-spacing: -.5px; }
+    .rest-pill-skip { background: rgba(255,255,255,.25); border: none; color: #fff; border-radius: 10px; font-size: .72rem; font-weight: 700; padding: 3px 8px; cursor: pointer; touch-action: manipulation; font-family: inherit; line-height: 1.4; }
+    .rest-pill-skip:active { background: rgba(255,255,255,.4); }
   </style>
 </head>
 <body>
@@ -292,6 +298,13 @@
       <button class="btn btn-primary btn-full" style="margin-bottom:8px" onclick="saveNewExercise()">Add to Library</button>
       <button class="btn btn-ghost btn-full" onclick="closeModal('newExOverlay')">Cancel</button>
     </div>
+  </div>
+
+  <!-- REST PILL -->
+  <div class="rest-pill hidden" id="restPill">
+    <span>Rest</span>
+    <span class="rest-pill-time" id="restPillTime">1:30</span>
+    <button class="rest-pill-skip" onclick="skipTimer()">Skip</button>
   </div>
 
   <!-- EDIT SET -->
@@ -482,6 +495,12 @@ function updateTimerUI() {
   const showRest = timerOn || timerRem < timerDur;
   idle?.classList.toggle('hidden', showRest);
   rest?.classList.toggle('active', showRest);
+  const pill = document.getElementById('restPill');
+  const pillTime = document.getElementById('restPillTime');
+  if (pill && pillTime) {
+    pill.classList.toggle('hidden', !timerOn);
+    pillTime.textContent = fmtT(timerRem);
+  }
 }
 function startElapsedTimer() {
   if (elapsedIv) clearInterval(elapsedIv);
@@ -528,7 +547,6 @@ function startRest(duration) {
   if (duration) timerDur = duration;
   clearInterval(timerIv); timerOn = false; timerRem = timerDur;
   toggleTimer();
-  document.getElementById('timerSection')?.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 // ── Dark mode ─────────────────────────────────────────────────────────────────
